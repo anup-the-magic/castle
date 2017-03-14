@@ -12,6 +12,14 @@ $ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
+- Bash 4.4
+```
+$ brew install bash
+# Add the new shell to the list of allowed shells
+sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
+# Change to the new shell
+chsh -s /usr/local/bin/bash
+```
 - [homeshick](https://github.com/andsens/homeshick/wiki/Installation)
 ```
 $ git clone git://github.com/andsens/homeshick.git $HOME/.homesick/repos/homeshick
