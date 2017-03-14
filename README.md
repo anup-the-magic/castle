@@ -21,6 +21,10 @@ $ $HOME/.homesick/repos/homeshick/bin/homeshick clone anup-2s/castle
 ```
 $ pip install powerline-status
 ```
+- [nvm](https://github.com/creationix/nvm#installation)
+```
+$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+```
 
 
 ### Useful things:
