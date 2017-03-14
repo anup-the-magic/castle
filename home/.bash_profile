@@ -125,3 +125,5 @@ alias downloads='cd ~/Downloads/'
 alias 'pwrln.dir'='cd /usr/local/lib/python3.6/site-packages/powerline'
 
 [[ -s "/Users/anupkishore/.gvm/scripts/gvm" ]] && source "/Users/anupkishore/.gvm/scripts/gvm"
+
+homeshick --quiet refresh
