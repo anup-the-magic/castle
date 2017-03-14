@@ -31,8 +31,9 @@ $ pip install powerline-status
 ```
 - [nvm](https://github.com/creationix/nvm#installation)
 ```
-$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+$ brew install nvm
 ```
+(if this causes errors install from source)
 
 
 ### Useful things:
