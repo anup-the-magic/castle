@@ -15,6 +15,7 @@ $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/inst
 - [homeshick](https://github.com/andsens/homeshick/wiki/Installation)
 ```
 $ brew install homeshick
+$ $HOME/.homesick/repos/homeshick/bin/homeshick clone anup-2s/castle
 ```
 - [powerline](https://github.com/powerline/powerline)
 ```
