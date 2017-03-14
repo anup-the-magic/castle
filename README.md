@@ -27,4 +27,4 @@ $ pip install powerline-status
 ```
 $ brew install thefuck
 ```
-- [powerline](https://github.com/jaspernbrouwer/powerline-gitstatus)
+- [powerline-gitstatus](https://github.com/jaspernbrouwer/powerline-gitstatus)
