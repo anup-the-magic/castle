@@ -1,0 +1,32 @@
+if [ -f .secrets ]; then 
+  source .secrets
+fi
+
+export NVM_DIR="$HOME/.nvm"
+. "$(brew --prefix nvm)/nvm.sh"
+
+export PATH="$PATH:/Users/anupkishore/.nim/bin:/Users/anupkishore/.nimble/bin:."
+
+export PGDATA=/usr/local/var/postgres
+
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+. /usr/local/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  . $(brew --prefix)/etc/bash_completion
+fi
+
+if [ -f ~/git-flow-completion ]; then
+  source ~/git-flow-completion/git-flow-completion.bash
+fi
+
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
+eval "$(thefuck --alias)"
+
+source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
