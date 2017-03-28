@@ -16,8 +16,8 @@ alias 'g.files'='git show --pretty="" --name-only HEAD'
 alias ports='lsof -i -P -n | grep "(LISTEN)" | awk '"'"'{print $1 " (PID:" $2 ") on " $9}'"'"''
 alias projects='la ~/.projects'
 
-if [ -f .postgres_aliases ]; then
-  source .postgres_aliases
+if [ -f ~/.postgres_aliases ]; then
+  source ~/.postgres_aliases
 fi
 alias postgres.server="pg_ctl -D /usr/local/var/postgres/"
 

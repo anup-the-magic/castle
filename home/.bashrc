@@ -26,6 +26,10 @@ if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
+if [ -x "$(command -v stack)" ]; then
+  eval "$(stack --bash-completion-script stack)"
+fi
+
 eval "$(thefuck --alias)"
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
