@@ -6,8 +6,7 @@ Plug 'vim-airline/vim-airline', has('nvim') ? {} : {'on': []} " replaced by powe
 Plug 'vim-airline/vim-airline-themes', has('nvim') ? {} : {'on': []} " replaced by powerline because I use tmux
 Plug 'airblade/vim-gitgutter'                     " Provides branch changes in the gutter
 Plug 'ctrlpvim/ctrlp.vim'                         " quick file search in base directory
-Plug 'elzr/vim-json'                              " makes jsons more readable
-Plug 'fatih/vim-go'                               " makes Go work
+Plug 'elzr/vim-json'                              " makes jsons more readable Plug 'fatih/vim-go'                               " makes Go work
 Plug 'gmarik/Vundle.vim'                          " make Vundle manage updating Vundle
 Plug 'godlygeek/tabular'                          " allows aligning columns of text
 Plug 'kchmck/vim-coffee-script'                   " makes coffeescript work
@@ -267,13 +266,13 @@ call neocomplete#util#set_default_dictionary(
 " Rainbow parens
 augroup rainbow_parens
   autocmd!
-  autocmd FileType *[eelixir] RainbowParentheses
+  autocmd FileType *[^eelixir] RainbowParentheses
   autocmd VimEnter *[^.html.eex] RainbowParentheses
   autocmd Syntax clojure RainbowParentheses
   autocmd BufEnter *.html.eex RainbowParentheses!
 augroup END
 let g:rainbow#max_level = 16
-let g:rainbow#pairs = [['(',')'],['[',']'],['{','}'],['<','\>']]
+let g:rainbow#pairs = [['(',')'],['[',']'],['{','}']]
 
 " vim-easy-align Easy Align
 vmap gi <Plug>(LiveEasyAlign)
