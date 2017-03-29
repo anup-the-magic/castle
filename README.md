@@ -12,15 +12,28 @@ $ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
+- Bash 4.4
+```
+$ brew install bash
+# Add the new shell to the list of allowed shells
+$ sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
+# Change to the new shell
+$ chsh -s /usr/local/bin/bash
+```
 - [homeshick](https://github.com/andsens/homeshick/wiki/Installation)
 ```
-$ brew install homeshick
+$ git clone git://github.com/andsens/homeshick.git $HOME/.homesick/repos/homeshick
 $ $HOME/.homesick/repos/homeshick/bin/homeshick clone anup-2s/castle
 ```
 - [powerline](https://github.com/powerline/powerline)
 ```
 $ pip install powerline-status
 ```
+- [nvm](https://github.com/creationix/nvm#installation)
+```
+$ brew install nvm
+```
+(if this causes errors install from source)
 
 
 ### Useful things:

@@ -28,3 +28,4 @@
   cmd = vim -f -c \"Gdiff\" \"$MERGED\"
 [merge]
   tool = fugitive
+	defaultToUpstream = true

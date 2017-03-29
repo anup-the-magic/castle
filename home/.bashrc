@@ -5,7 +5,7 @@ fi
 export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
 
-export PATH="$PATH:/Users/anupkishore/.nim/bin:/Users/anupkishore/.nimble/bin:/Users/anupkishore/.local/bin:."
+export PATH="$PATH:$HOME/.nim/bin:$HOME/.nimble/bin:$HOME/.local/.bin:."
 
 export PGDATA=/usr/local/var/postgres
 
@@ -24,6 +24,10 @@ fi
 
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
+fi
+
+if [ -x "$(command -v stack)" ]; then
+  eval "$(stack --bash-completion-script stack)"
 fi
 
 eval "$(thefuck --alias)"
