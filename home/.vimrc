@@ -39,6 +39,7 @@ Plug 'elixir-lang/vim-elixir'                     " elixir syntax
 Plug 'slashmili/alchemist.vim'                    " elixir autocomplete
 Plug 'avdgaag/vim-phoenix'                        " Phoenix additions
 Plug 'elmcast/elm-vim'                            " Elm
+Plug 'alx741/vim-hindent'                         " Indent haskell code if hindent is installed
 " the tpope god solves clojure
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-salve'
