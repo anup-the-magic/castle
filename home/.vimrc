@@ -63,6 +63,7 @@ Plug 'altercation/vim-colors-solarized'           " colorscheme -- solarized
 Plug 'aliou/moriarty.vim'                         " colorscheme -- moriarty
 Plug 'tomsik68/vim-crystallite'                   " colorscheme -- crystallite
 Plug 'dracula/Vim'                                " colorscheme -- dracula
+Plug 'marciomazza/vim-brogrammer-theme'                                " colorscheme -- brogrammer
 
 " Plug 'ryanoasis/vim-devicons'                     " ICONS!
 call plug#end()                         " required
@@ -427,12 +428,14 @@ aug END
 """ Colorscheme setting
 " set termguicolors
 set t_Co=256
-" " color dracula
+" colorscheme dracula
+
+colorscheme brogrammer
 
 " Solarized
-set background=dark
+" set background=dark
 " let g:solarized_termcolors=256
-colorscheme solarized
+" colorscheme solarized
 
 " Moriarty
 " colorscheme moriarty
