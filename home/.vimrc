@@ -2,6 +2,8 @@ call plug#begin('~/.vim/plugged')
 " Plug 'Valloric/YouCompleteMe'                   " Autocomplete magic!
 Plug 'Shougo/neocomplete.vim'                     " Autocomplete magic!
 Plug 'Shougo/unite.vim'                           " better fuzzy finder, ish
+Plug 'Shougo/denite.nvim'                         " better fuzzy finder, ish
+Plug 'Shougo/vimproc.vim', { 'do' : 'make' }
 Plug 'vim-airline/vim-airline', has('nvim') ? {} : {'on': []} " replaced by powerline because I use tmux
 Plug 'vim-airline/vim-airline-themes', has('nvim') ? {} : {'on': []} " replaced by powerline because I use tmux
 Plug 'airblade/vim-gitgutter'                     " Provides branch changes in the gutter
@@ -86,15 +88,22 @@ function! s:check_back_space() "{{{
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
 
-" Unite
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <leader>a :<C-u>Unite<CR>
+" Unite/Denite
+" call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" noremap <leader>/ :<C-u>Denite line<CR>
 
-call unite#custom#profile('default', 'context', {
-\   'start_insert': 1,
-\   'winheight': 10,
-\   'direction': 'botright',
-\ })
+" call unite#custom#profile('default', 'context', {
+" \   'start_insert': 1,
+" \   'winheight': 10,
+" \   'direction': 'botright',
+" \ })
+" call denite#custom#profile('default', 'context', {
+" \   'start_insert': 1,
+" \   'winheight': 10,
+" \   'direction': 'botright',
+" \ })
+" call denite#sources#rec#define()
+" call denite#custom#source('file_rec/async,file_mru,file,buffer,grep', 'ignore_pattern', g:unite_source_rec_ignore_pattern . '\|node_modules\|tmp')
 
 " Nim
 fun! JumpToDef()
