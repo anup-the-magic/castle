@@ -316,6 +316,8 @@ command! Wqa wqa
 inoremap jk <ESC>
 inoremap kj <ESC>
 
+set clipboard^=unnamed,unnamedplus
+
 set diffopt=filler,vertical
 
 " Make tabbing intuitive
