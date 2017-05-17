@@ -178,9 +178,11 @@ let g:ctrlp_abbrev = {
 nnoremap <leader>ne :NERDTreeToggle<CR>
 nnoremap <leader>no :NERDTreeFocus<CR>
 " First two lines enable NERDTree on startup
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTreeToggle | endif
-
+augroup nerdtree
+  au!
+  autocmd StdinReadPre * let s:std_in=1
+  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTreeToggle | endif
+augroup END
 " Icons, devicons
 " let g:NERDTreeSyntaxDisableDefaultExtensions = 1
 " let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -213,7 +215,10 @@ nnoremap <leader><space>e :%Eval<CR>
 nnoremap <leader><space>= :Eval<CR>
 
 " Neomake
-autocmd! BufWritePost * Neomake
+augroup neomake
+  au!
+  autocmd! BufWritePost * Neomake
+augroup END
 let g:neomake_warning_sign = {
       \ 'text': '>>',
       \ 'texthl': 'Statement',
@@ -329,6 +334,14 @@ command! Wqa wqa
 inoremap jk <ESC>
 inoremap kj <ESC>
 
+" user autocmdgroup
+augroup local
+  autocmd!
+  autocmd VimLeave * execute 'mksession! ~/.session.vim'
+  " Recognize .coffee files
+  autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+augroup END
+
 set clipboard^=unnamed,unnamedplus
 
 set diffopt=filler,vertical
@@ -345,8 +358,6 @@ set backspace=2
 set cursorline
 set colorcolumn=100
 
-" Recognize .coffee files
-autocmd BufNewFile,BufRead *.coffee set filetype=coffee
 
 " Line numbers
 set number 
@@ -401,6 +412,7 @@ let g:go_fmt_fail_silently = 1
 
 " Save folds automagically
 augroup myFoldGroup
+  autocmd!
   autocmd BufWinLeave *.* mkview
   autocmd BufWinEnter *.* silent! loadview 
 augroup END
@@ -417,7 +429,10 @@ augroup tmuxconf
 augroup END
 " updates unchanged files when waiting around
 set autoread
-au CursorHold,CursorHoldI * silent! checktime
+augroup updatefiles
+  au!
+  au CursorHold,CursorHoldI * silent! checktime
+augroup END
 
 " makes vnew and new behave normally
 set splitright
