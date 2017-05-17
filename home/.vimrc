@@ -44,6 +44,8 @@ Plug 'slashmili/alchemist.vim'                    " elixir autocomplete
 Plug 'avdgaag/vim-phoenix'                        " Phoenix additions
 Plug 'elmcast/elm-vim'                            " Elm
 Plug 'alx741/vim-hindent'                         " Indent haskell code if hindent is installed
+Plug 'vim-scripts/SQLUtilities'                   " hate u hate u hate u
+Plug 'vim-scripts/Align'                          " needed for SQLFormatter
 " the tpope god solves clojure
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-salve'
@@ -276,6 +278,17 @@ call neocomplete#util#set_default_dictionary(
 " nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
 " nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
+" Filetype stuff
+" SQUUtilities SQLFormatter
+let g:sqlutil_align_where = 0
+let g:sqlutil_align_comma = 1
+let g:sqlutil_load_default_maps = 0
+vmap <leader>sf   <Plug>SQLUFormatter<CR>
+nmap <leader>scl  <Plug>SQLUCreateColumnList<CR>
+nmap <leader>scd  <Plug>SQLUGetColumnDef<CR>
+nmap <leader>scdt <Plug>SQLUGetColumnDataType<CR>
+nmap <leader>scp  <Plug>SQLUCreateProcedure<CR>
+
 " Rainbow parens
 augroup rainbow_parens
   autocmd!
@@ -367,6 +380,8 @@ nnoremap <leader>= :nohlsearch <bar> :redraw! <CR>
 
 " reindent code:
 nnoremap <leader>; mcgg=G`c
+" Tmux style zoom with <leader>z, q/wq to return
+nnoremap <leader>z :tabnew % <CR>
 
 " Allows folding
 set foldenable
