@@ -13,7 +13,7 @@ alias tmux='tmux -2'
 alias 'tigs'='tig status'
 alias 'comm'='git commit -m'
 alias 'g.files'='git show --pretty="" --name-only HEAD'
-alias ports='lsof -i -P -n | grep "(LISTEN)" | awk '"'"'{print $1 " (PID:" $2 ") on " $9}'"'"''
+alias ports='lsof -i -P -n | grep "(LISTEN)" | awk '"'"'{print $1 " (PID: " $2 ") on " $9}'"'"''
 alias projects='la ~/.projects'
 alias go.alias='ln -s $(pwd) $GOROOT'
 
