@@ -8,7 +8,12 @@ Plug 'vim-airline/vim-airline', has('nvim') ? {} : {'on': []} " replaced by powe
 Plug 'vim-airline/vim-airline-themes', has('nvim') ? {} : {'on': []} " replaced by powerline because I use tmux
 Plug 'airblade/vim-gitgutter'                     " Provides branch changes in the gutter
 Plug 'ctrlpvim/ctrlp.vim'                         " quick file search in base directory
-Plug 'elzr/vim-json'                              " makes jsons more readable Plug 'fatih/vim-go'                               " makes Go work
+Plug 'elzr/vim-json'                              " makes jsons more readable
+Plug 'fatih/vim-go'                               " makes Go work
+Plug 'fsharp/vim-fsharp', {
+      \ 'for': 'fsharp',
+      \ 'do':  'make fsautocomplete',
+      \}
 Plug 'gmarik/Vundle.vim'                          " make Vundle manage updating Vundle
 Plug 'godlygeek/tabular'                          " allows aligning columns of text
 Plug 'kchmck/vim-coffee-script'                   " makes coffeescript work
@@ -33,6 +38,7 @@ Plug 'tpope/vim-unimpaired'                       " [<command> and ]<command> co
 
 " Filetypes
 Plug 'wavded/vim-stylus'                          " syntax for Stylus
+Plug 'sbdchd/neoformat'                           " autoformatter
 Plug 'pangloss/vim-javascript'                    " adds ES6 highlighting, alongside vim-jsx
 Plug 'mxw/vim-jsx'                                " jsx highlighting
 Plug 'digitaltoad/vim-pug'                        " Jade/Pug syntax highlighting
@@ -44,6 +50,7 @@ Plug 'slashmili/alchemist.vim'                    " elixir autocomplete
 Plug 'avdgaag/vim-phoenix'                        " Phoenix additions
 Plug 'elmcast/elm-vim'                            " Elm
 Plug 'alx741/vim-hindent'                         " Indent haskell code if hindent is installed
+Plug 'itchyny/vim-haskell-indent'                 " Pre-indent code so hindent doesn't struggle so much
 Plug 'vim-scripts/SQLUtilities'                   " hate u hate u hate u
 Plug 'vim-scripts/Align'                          " needed for SQLFormatter
 " the tpope god solves clojure
@@ -54,8 +61,9 @@ Plug 'tpope/vim-classpath'
 Plug 'guns/vim-clojure-static'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
+Plug 'hashivim/vim-terraform'                     " terraform
 
-"                                                 " other
+" other
 Plug 'wesQ3/vim-windowswap'                       " swap panes w/ \ww
 Plug 'tpope/vim-fugitive'                         " Git happiness
 Plug 'easymotion/vim-easymotion'                  " Makes f and t and w nicer
@@ -92,6 +100,16 @@ function! s:check_back_space() "{{{
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+" Neoformat fmt prettier
+autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ --trailing-comma\ es5
+let g:neoformat_try_formatprg = 1
+let g:neoformat_only_msg_on_error = 1
+autocmd BufWritePre,TextChanged,InsertLeave *.js silent! Neoformat
 
 " Unite/Denite
 " call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -178,11 +196,14 @@ let g:ctrlp_abbrev = {
 nnoremap <leader>ne :NERDTreeToggle<CR>
 nnoremap <leader>no :NERDTreeFocus<CR>
 " First two lines enable NERDTree on startup
-augroup nerdtree
-  au!
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTreeToggle | endif
-augroup END
+if !has('nvim')
+  augroup nerdtree
+    au!
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTreeToggle | endif
+  augroup END
+endif
+
 " Icons, devicons
 " let g:NERDTreeSyntaxDisableDefaultExtensions = 1
 " let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -215,19 +236,15 @@ nnoremap <leader><space>e :%Eval<CR>
 nnoremap <leader><space>= :Eval<CR>
 
 " Neomake
-augroup neomake
-  au!
-  autocmd! BufWritePost * Neomake
-augroup END
 let g:neomake_warning_sign = {
       \ 'text': '>>',
-      \ 'texthl': 'Statement',
+      \ 'texthl': 'Label',
       \ }
 let g:neomake_error_sign = {
       \ 'text': '>>',
-      \ 'texthl': 'Error',
+      \ 'texthl': 'Statement',
       \ }
-let g:neomake_elixir_enabled_makers = ['mix', 'mycredo']
+let g:neomake_elixir_enabled_makers = ['mycredo']
 function! NeomakeCredoErrorType(entry)
     if a:entry.type ==# 'F'      " Refactoring opportunities
         let type = 'W'
@@ -251,7 +268,17 @@ let g:neomake_elixir_mycredo_maker = {
       \ 'postprocess': function('NeomakeCredoErrorType')
       \ }
 
-" let g:neomake_elixir_enabled_makers = ['mix', 'credo']
+let g:neomake_elixir_myelixirc_maker = {
+      \ 'exe': 'elixirc',
+      \ 'args': [
+        \ '--ignore-module-conflict', '--warnings-as-errors',
+        \ '--app', 'mix', '--app', 'ex_unit',
+        \ '-o', $TMPDIR, '%:p'
+      \ ],
+      \ 'errorformat':
+          \ '%E** %s %f:%l: %m,' .
+          \ '%Wwarning: %m,%Z  %f:%l'
+      \ }
 
 " Syntastic
 " let g:syntastic_javascript_checkers = ['eslint']
@@ -289,6 +316,7 @@ let g:sqlutil_align_where = 0
 let g:sqlutil_align_comma = 1
 let g:sqlutil_load_default_maps = 0
 vmap <leader>sf   <Plug>SQLUFormatter<CR>
+nmap <leader><leader>sf   :%SQLUFormatter<CR>
 nmap <leader>scl  <Plug>SQLUCreateColumnList<CR>
 nmap <leader>scd  <Plug>SQLUGetColumnDef<CR>
 nmap <leader>scdt <Plug>SQLUGetColumnDataType<CR>
@@ -309,7 +337,12 @@ let g:rainbow#pairs = [['(',')'],['[',']'],['{','}']]
 vmap gi <Plug>(LiveEasyAlign)
 nmap gi <Plug>(LiveEasyAlign)
 nmap ga <Plug>(EasyAlign)
-vmap ga <Plug>(EasyAlign) 
+vmap ga <Plug>(EasyAlign)
+
+" terraform
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
+au! FileType terraform setlocal commentstring=#%s
 
 " Search for word
 nnoremap <leader>sw /\<\><left><left>
@@ -340,6 +373,8 @@ augroup local
   autocmd VimLeave * execute 'mksession! ~/.session.vim'
   " Recognize .coffee files
   autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+  autocmd BufWritePre * %s/\s\+$//e
+  autocmd! BufWritePost * Neomake
 augroup END
 
 set clipboard^=unnamed,unnamedplus
@@ -360,7 +395,7 @@ set colorcolumn=100
 
 
 " Line numbers
-set number 
+set number
 set ruler
 
 " Always show command bar
@@ -381,7 +416,7 @@ endif
 
 " These two make smart case searching a thing
 set ignorecase
-set smartcase   
+set smartcase
 " Search as you type
 set incsearch
 " Highlight all matches
@@ -391,6 +426,10 @@ nnoremap <leader>= :nohlsearch <bar> :redraw! <CR>
 
 " reindent code:
 nnoremap <leader>; mcgg=G`c
+augroup sqlnoreindent
+  au!
+  au FileType sql silent! nunmap <leader>;
+augroup END
 " Tmux style zoom with <leader>z, q/wq to return
 nnoremap <leader>z :tabnew % <CR>
 
@@ -414,7 +453,7 @@ let g:go_fmt_fail_silently = 1
 augroup myFoldGroup
   autocmd!
   autocmd BufWinLeave *.* mkview
-  autocmd BufWinEnter *.* silent! loadview 
+  autocmd BufWinEnter *.* silent! loadview
 augroup END
 
 " automatically source .vimrc on changes:
