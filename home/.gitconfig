@@ -13,7 +13,7 @@
   ff = merge --ff-only
   nf = merge --no-ff
   noff = merge --no-ff
-  local-prune = !"git branch --merged | grep -Ev '\\*|master|develop|release' | xargs -n 1 git branch -d"
+  local-prune = !"git branch --merged | grep -Ev '\\*|master|develop|release' | xargs -n1 -p git branch -d"
   freebase = !"git fetch && git rebase"
   pushup = push -u origin HEAD
   lg = !"git lg1"

@@ -1,4 +1,5 @@
 set -o vi
+bind '"jk":"\e"'
 shopt -s globstar
 
 if [ -f $HOME/.bashrc ]; then

@@ -1,4 +1,4 @@
-if [ -f .secrets ]; then 
+if [ -f .secrets ]; then
   source .secrets
 fi
 
