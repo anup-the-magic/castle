@@ -5,7 +5,7 @@ fi
 export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
 
-export PATH="$PATH:$HOME/.nim/bin:$HOME/.nimble/bin:$HOME/.local/bin:."
+export PATH="$PATH:/usr/local/sbin:$HOME/.nim/bin:$HOME/.nimble/bin:$HOME/.local/bin:."
 
 export PGDATA=/usr/local/var/postgres
 
@@ -34,3 +34,4 @@ eval "$(thefuck --alias)"
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+MONO_GAC_PREFIX="/usr/local"

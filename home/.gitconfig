@@ -7,7 +7,7 @@
 [push]
   default = simple
 [core]
-  editor = /usr/local/bin/vim
+  editor = vim
 [alias]
   ch = checkout
   ff = merge --ff-only
@@ -28,4 +28,6 @@
   cmd = vim -f -c \"Gdiff\" \"$MERGED\"
 [merge]
   tool = fugitive
-	defaultToUpstream = true
+  defaultToUpstream = true
+[status]
+  submodulesummary = 1
