@@ -32,6 +32,7 @@ function jsonl {
   cat $input | sed = | sed 'N;s/\n/": /;s/^/"/;s/$/,/;$s/,$/}/' | sed '1s/^/{/'
 }
 alias json='python -m json.tool'
+alias decomment='sed -e "s/^-- //"'
 
 function getdata {
   if [ "$#" -le 1 ]
@@ -113,6 +114,15 @@ function project {
   fi
   ln -s ~/2s/$1 ~/.projects/$2;
   sourceme;
+}
+
+function remind_me {
+  local msg=$1
+
+  local duration=${2:-10}
+
+  sleep $duration && say $msg
+  remind_me "$msg" $duration
 }
 
 PROJECTS=~/.projects/*
