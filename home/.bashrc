@@ -39,3 +39,4 @@ eval "$(thefuck --alias)"
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 MONO_GAC_PREFIX="/usr/local"
+export PATH=$HOME/2s/.bin:$PATH
