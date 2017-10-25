@@ -26,9 +26,11 @@ alias postgres.server="pg_ctl -D /usr/local/var/postgres/"
 alias 'sourceme'='source ~/.bash_profile'
 alias src='sourceme'
 alias 'resource'='unalias -a && source ~/.bash_profile'
+alias "finder.show_hidden"="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
+alias "finder.hide_all"="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
 
 function jsonl {
-  [ $# -ge 1 -a -f "$1" ] && input="$1" || input="-"
+  [ $# -ge 1 ] && [ -f "$1" ] && input="$1" || input="-"
   cat $input | sed = | sed 'N;s/\n/": /;s/^/"/;s/$/,/;$s/,$/}/' | sed '1s/^/{/'
 }
 alias json='python -m json.tool'
