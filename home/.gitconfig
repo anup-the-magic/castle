@@ -8,6 +8,7 @@
   default = simple
 [core]
   editor = vim
+  excludesfile = ~/.gitignore_mac
 [alias]
   ch = checkout
   ff = merge --ff-only
