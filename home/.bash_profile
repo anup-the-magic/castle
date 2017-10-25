@@ -29,6 +29,8 @@ alias 'resource'='unalias -a && source ~/.bash_profile'
 alias "finder.show_hidden"="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
 alias "finder.hide_all"="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
 
+alias game_state='jq '"'"'.["game-state"]'"'"''
+
 function jsonl {
   [ $# -ge 1 ] && [ -f "$1" ] && input="$1" || input="-"
   cat $input | sed = | sed 'N;s/\n/": /;s/^/"/;s/$/,/;$s/,$/}/' | sed '1s/^/{/'
