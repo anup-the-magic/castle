@@ -1,0 +1,10 @@
+# See https://gist.github.com/gregorynicholas/1812027
+set completion-ignore-case on
+set visible-stats on
+set editing-mode vi
+
+# From http://www.ukuug.org/events/linux2003/papers/bash_tips/
+# Incremental searching with Up and Down. Type 'ssh <up>' to get the last 'ssh' command you used
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"jk":"\e"
