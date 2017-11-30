@@ -42,3 +42,5 @@ MONO_GAC_PREFIX="/usr/local"
 export PATH=$HOME/2s/.bin:$PATH
 
 export EDITOR=vim
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
