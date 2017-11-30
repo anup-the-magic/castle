@@ -19,6 +19,8 @@
   freebase = !"git fetch && git rebase"
   fix-local = !bash -c 'git push origin +${1:-develop}:$(git rev-parse --abbrev-ref HEAD)'
   pushup = push -u origin HEAD
+  sync-tags = !"git tag -d $(git tag -l) && git fetch"
+
   lg = !"git lg1"
   lg1 = !"git lg1-specific --all"
   lg2 = !"git lg2-specific --all"
