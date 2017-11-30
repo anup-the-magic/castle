@@ -166,13 +166,34 @@ augroup myFoldGroup
   autocmd BufWinEnter *.* silent! loadview
 augroup END
 " ====================== PLUGINS ======================
-let g:neoformat_only_msg_on_error = 1
-augroup neoformatGroup
-  autocmd!
-  autocmd BufWritePre,InsertLeave *.js silent! Neoformat
-  autocmd BufWritePre,InsertLeave *.ts silent! Neoformat
-  autocmd BufWritePre,InsertLeave *.json silent! Neoformat
-augroup END
+" let g:neoformat_only_msg_on_error = 1
+" augroup neoformatGroup
+"   autocmd!
+"   autocmd BufWritePre,InsertLeave *.js Neoformat
+"   autocmd BufWritePre,InsertLeave *.jsx Neoformat
+"   autocmd BufWritePre,InsertLeave *.ts silent! Neoformat
+"   autocmd BufWritePre,InsertLeave *.json silent! Neoformat
+" augroup END
+
+let g:ale_fixers = {}
+let g:ale_fixers['javascript'] = ['prettier']
+let g:ale_fixers['typescript'] = ['prettier']
+let g:ale_fixers['elm'] = ['format']
+
+let g:ale_javascript_prettier_use_local_config = 1
+let g:ale_typescript_prettier_use_local_config = 1
+let g:ale_json_prettier_use_local_config = 1
+
+let g:ale_fix_on_save = 1
+
+" augroup aleformatting
+"   autocmd!
+"   autocmd BufWritePre,InsertLeave *.js silent! ALEFix
+"   autocmd BufWritePre,InsertLeave *.ts silent! ALEFix
+"   autocmd BufWritePre,InsertLeave *.json silent! ALEFix
+"   autocmd BufWritePre,InsertLeave *.elm silent! ALEFix
+" augroup END
+
 
 " Ale
 "" To turn off always linting:
