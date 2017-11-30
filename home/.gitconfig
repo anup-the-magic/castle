@@ -12,6 +12,7 @@
 [alias]
   ch = checkout
   ff = merge --ff-only
+  fff = !"git fetch && git merge --ff-only"
   nf = merge --no-ff
   noff = merge --no-ff
   local-prune = !"git branch --merged | grep -Ev '\\*|master|develop|release' | xargs -n1 -p git branch -d"
