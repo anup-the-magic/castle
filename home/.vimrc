@@ -29,9 +29,9 @@ Plug 'tpope/vim-dispatch'    " Async fire off terminal commands!
 Plug 'airblade/vim-gitgutter' " Provides branch changes in the gutter
 
 " =============== Syntax ===============
-Plug 'elzr/vim-json' " makes jsons more readable
+Plug 'elzr/vim-json'          " makes jsons more readable
 ""
-Plug 'elmcast/elm-vim' " Elm
+Plug 'elmcast/elm-vim'        " Elm
 ""
 Plug 'alx741/vim-hindent' " Indent haskell code if hindent is installed
 Plug 'itchyny/vim-haskell-indent' " Pre-indent code so hindent doesn't struggle so much
@@ -53,7 +53,7 @@ Plug 'digitaltoad/vim-pug'      " Jade/pug format
 Plug 'ctrlpvim/ctrlp.vim'  " quick file search in base directory
 Plug 'scrooloose/nerdtree' " directory tree file navigation
 Plug 'mileszs/ack.vim'     " code search in Vim using ack. Required for Ag
-Plug 'rking/ag.vim'                               " Uses Ack, but faster
+Plug 'rking/ag.vim'        " Uses Ack, but faster
 
 Plug 'altercation/vim-colors-solarized' " colorscheme -- solarized
 Plug 'aliou/moriarty.vim'               " colorscheme -- moriarty
@@ -211,30 +211,30 @@ python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
 
-set rtp+=/usr/local/lib/python3.6/site-packages/powerline/bindings/vim
+set runtimepath+=/usr/local/lib/python3.6/site-packages/powerline/bindings/vim
 
 let g:Powerline_symbols='fancy'
 set encoding=utf-8
 set fillchars+=stl:\ ,stlnc:\
 set termencoding=utf-8
 
-" Easy Align, vim-easy-align
+" Easy Align, vim-easy-align, Tabular, Tab
 vmap gi <Plug>(LiveEasyAlign)
 nmap gi <Plug>(LiveEasyAlign)
 nmap ga <Plug>(EasyAlign)
 vmap ga <Plug>(EasyAlign)
 
-" elm
+"" elm
 let g:elm_jump_to_error = 0
-let g:elm_make_output_file = "elm.js"
+let g:elm_make_output_file = 'elm.js'
 let g:elm_make_show_warnings = 1
 let g:elm_syntastic_show_warnings = 1
-let g:elm_browser_command = ""
+let g:elm_browser_command = ''
 let g:elm_detailed_complete = 1
 let g:elm_format_autosave = 1
 let g:elm_format_fail_silently = 1
 let g:elm_setup_keybindings = 1
-
+"
 " NERDTree
 nnoremap <leader>ne :NERDTreeToggle<CR>
 nnoremap <leader>no :NERDTreeFocus<CR>
