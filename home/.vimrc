@@ -175,16 +175,33 @@ augroup END
 "   autocmd BufWritePre,InsertLeave *.json silent! Neoformat
 " augroup END
 
+" Ale
+"" To turn off always linting:
+" let g:ale_lint_on_text_changed = 'never'
+
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['prettier']
 let g:ale_fixers['typescript'] = ['prettier']
 let g:ale_fixers['elm'] = ['format']
+let g:ale_fixers['scala'] = ['scalafmt']
+
+let g:ale_linters = {}
+" Remove stack-ghc, ghc-mod since they don't maintain cabal relative pathing
+let g:ale_linters['haskell'] =
+      \ [ 'hlint'
+      \ , 'hdevtools'
+      \ , 'hfmt'
+      \ , 'stack-ghc'
+      \ , 'stack-build'
+      \ ]
+let g:ale_linters['elixir'] = ['credo']
 
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_typescript_prettier_use_local_config = 1
 let g:ale_json_prettier_use_local_config = 1
 
 let g:ale_fix_on_save = 1
+nnoremap <leader>d :ALEDetail<CR>
 
 " augroup aleformatting
 "   autocmd!
@@ -194,13 +211,6 @@ let g:ale_fix_on_save = 1
 "   autocmd BufWritePre,InsertLeave *.elm silent! ALEFix
 " augroup END
 
-
-" Ale
-"" To turn off always linting:
-" let g:ale_lint_on_text_changed = 'never'
-let g:ale_linters = {
-      \ 'elixir': ['credo'],
-      \ }
 
 " Powerline
 " NOTE: requires outside setup
