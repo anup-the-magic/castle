@@ -49,6 +49,8 @@ Plug 'avdgaag/vim-phoenix'       " Phoenix additions
 Plug 'wavded/vim-stylus'        " syntax for Stylus
 Plug 'kchmck/vim-coffee-script' " Coffeescript
 Plug 'digitaltoad/vim-pug'      " Jade/pug format
+""
+Plug 'fatih/vim-go' " Golang support
 
 Plug 'ctrlpvim/ctrlp.vim'  " quick file search in base directory
 Plug 'scrooloose/nerdtree' " directory tree file navigation
