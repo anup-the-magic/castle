@@ -192,6 +192,7 @@ augroup END
 
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['prettier']
+let g:ale_fixers['json'] = ['prettier']
 let g:ale_fixers['typescript'] = ['prettier']
 let g:ale_fixers['elm'] = ['format']
 let g:ale_fixers['scala'] = ['scalafmt']
