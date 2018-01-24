@@ -7,6 +7,7 @@ fi
 alias 'ls'='ls -G'
 alias 'll'='ls -l'
 alias 'la'='ls -al'
+alias curl='curl -w "\n"'
 alias tmux='tmux -2'
 
 alias 'tigs'='tig status'
