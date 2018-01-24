@@ -1,7 +1,7 @@
 shopt -s globstar
 
-if [ -f $HOME/.bashrc ]; then
-    source $HOME/.bashrc
+if [ -f "$HOME/.bashrc" ]; then
+    source "$HOME/.bashrc"
 fi
 
 alias 'ls'='ls -G'
@@ -41,59 +41,6 @@ function jsonl {
 }
 alias json='python -m json.tool'
 alias decomment='sed -e "s/^-- //"'
-
-function getdata {
-  if [ "$#" -le 1 ]
-  then
-    shopt -s nullglob
-    for folder in ~/2s/test-data/*; do
-      for file in $folder/*; do
-        echo "$(basename $folder) - $(basename $file)"
-      done
-    done
-    shopt -u nullglob
-    return 1
-  fi
-  local folder=$1/src/$3/resources/$2
-  local target=test-data/$1/$2.$3.$4
-  read -p "update $folder with $target? [yN] " -n 1 -r
-  local folder=~/2s/$folder
-  local target=~/2s/$target
-  echo    # (optional) move to a new line
-  if [[ $REPLY =~ ^[Nn]?$ || ! -e $target ]]
-  then
-    echo "available options for project $1:"
-    shopt -s nullglob
-    for file in ~/2s/test-data/$1/*; do
-      echo $file
-    done
-    shopt -u nullglob
-    return 1
-  fi
-  rm -rf $folder
-  cp -r $target $folder
-}
-
-function putdata {
-  local folder=$1/src/$3/resources/$2
-  local target=test-data/$1/$2.$3.$4
-  read -p "update $target with $folder? [yN] " -n 1 -r
-  local folder=~/2s/$folder
-  local target=~/2s/$target
-  echo
-  if [[ $REPLY =~ ^[Nn]?$ || ! -e $folder ]]
-  then
-    if [[ ! -e $folder ]]
-    then
-      echo "$folder does not exist!"
-    fi
-    return 1
-  fi
-  cp -r $folder $target
-  echo "done"
-}
-
-alias alldirs='"e3/ datastore-lib/ scala/ server/ visualizations/"'
 
 function gitall {
   local branch=$1
