@@ -17,6 +17,11 @@ alias ports='lsof -i -P -n | grep "(LISTEN)" | awk '"'"'{print $1 " (PID: " $2 "
 alias projects='la ~/.projects'
 alias go.alias='ln -s $(pwd) $GOROOT'
 
+function ports-on {
+  local port=$1
+  lsof -i -P -n | grep "(LISTEN)" | grep "$port" | awk '{print $2}'
+}
+
 if [ -f ~/.postgres_aliases ]; then
   source ~/.postgres_aliases
 fi
@@ -126,6 +131,27 @@ function remind_me {
 
   sleep $duration && say $msg
   remind_me "$msg" $duration
+}
+
+function export-toml {
+  usage="usage: $0 [-c|--config config] [-p|--prefix prefix] [-k|--key key]"
+
+  config=config.toml
+  prefix='\U'
+  key=env
+
+  while [ $# -gt 0 ]
+  do
+    case $1 in
+      -c|--config) config=$2; shift ;;
+      -p|--prefix) prefix=$2; shift ;;
+      -k|--key   ) key=$2; shift ;;
+      (*) echo "$usage" >&2
+    esac
+    shift
+  done
+
+  sed -e '0,/\['"$key"'\]/d;/\[,$p/d;s/.*=/export '"$prefix"'&/' "$config"
 }
 
 PROJECTS=~/.projects/*
