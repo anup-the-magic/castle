@@ -34,6 +34,8 @@ if [ -x "$(command -v stack)" ]; then
   eval "$(stack --bash-completion-script stack)"
 fi
 
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
 eval "$(thefuck --alias)"
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
