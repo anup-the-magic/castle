@@ -137,6 +137,7 @@ set smartcase
 set incsearch
 " Highlight all matches
 set hlsearch
+nnoremap <leader>8 :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 " clear searches with <leader>=
 nnoremap <leader>= :nohlsearch <bar> :redraw! <CR>
 
@@ -161,6 +162,13 @@ augroup filetype_json
   au FileType json setlocal foldlevelstart=4
 augroup END
 
+" augroup filetype_golang
+"   au!
+"   au FileType go nmap <leader>i <Plug>(go-info)
+" augroup END
+let g:go_auto_type_info=1
+set updatetime=800
+
 " Save folds automagically
 augroup myFoldGroup
   autocmd!
@@ -168,6 +176,7 @@ augroup myFoldGroup
   autocmd BufWinEnter *.* silent! loadview
 augroup END
 " ====================== PLUGINS ======================
+"" Neoformat
 " let g:neoformat_only_msg_on_error = 1
 " augroup neoformatGroup
 "   autocmd!
@@ -197,6 +206,7 @@ let g:ale_linters['haskell'] =
       \ , 'stack-build'
       \ ]
 let g:ale_linters['elixir'] = ['credo']
+let g:ale_linters['go'] = ['gofmt', 'goimports', 'go vet', 'gotype', 'go build', 'gosimple']
 
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_typescript_prettier_use_local_config = 1
@@ -213,6 +223,8 @@ nnoremap <leader>d :ALEDetail<CR>
 "   autocmd BufWritePre,InsertLeave *.elm silent! ALEFix
 " augroup END
 
+"" YCM
+let g:ycm_autoclose_preview_window_after_completion = 1
 
 " Powerline
 " NOTE: requires outside setup
