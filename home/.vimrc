@@ -161,6 +161,13 @@ augroup filetype_json
   au FileType json setlocal foldlevelstart=4
 augroup END
 
+augroup filetype_markdown
+  au!
+  au FileType markdown setlocal wrap
+  au FileType markdown setlocal linebreak
+  au FileType markdown setlocal nolist
+augroup END
+
 " augroup filetype_golang
 "   au!
 "   au FileType go nmap <leader>i <Plug>(go-info)
