@@ -1,6 +1,6 @@
 function! BuildYCM(info)
-  if a:info.status == 'installed' || a:info.force
-    !./install.py --all
+  if a:info.status ==# 'installed' || a:info.force
+    !./install.py --cs-completer --go-completer --js-completer --java-completer
   endif
 endfunction
 
@@ -226,6 +226,9 @@ nnoremap <leader>d :ALEDetail<CR>
 
 "" YCM
 let g:ycm_autoclose_preview_window_after_completion = 1
+
+let g:ycm_semantic_triggers = {}
+let g:ycm_semantic_triggers['elm'] = ['.']
 
 " Powerline
 " NOTE: requires outside setup
