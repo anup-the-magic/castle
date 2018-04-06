@@ -33,7 +33,6 @@ Plug 'elzr/vim-json'          " makes jsons more readable
 ""
 Plug 'elmcast/elm-vim'        " Elm
 ""
-Plug 'alx741/vim-hindent' " Indent haskell code if hindent is installed
 Plug 'itchyny/vim-haskell-indent' " Pre-indent code so hindent doesn't struggle so much
 ""
 Plug 'pangloss/vim-javascript'    " adds ES6 highlighting, alongside vim-jsx
@@ -196,6 +195,7 @@ let g:ale_fixers['json'] = ['prettier']
 let g:ale_fixers['typescript'] = ['prettier']
 let g:ale_fixers['elm'] = ['format']
 let g:ale_fixers['scala'] = ['scalafmt']
+let g:ale_fixers['haskell'] = ['hfmt']
 
 let g:ale_linters = {}
 " Remove stack-ghc, ghc-mod since they don't maintain cabal relative pathing
