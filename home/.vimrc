@@ -216,6 +216,8 @@ let g:ale_linters['haskell'] =
 let g:ale_linters['elixir'] = ['credo']
 let g:ale_linters['go'] = ['gofmt', 'goimports', 'go vet', 'gotype', 'go build', 'gosimple']
 
+let g:ale_set_loc_list = 0
+let g:ale_set_quickfix = 1
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_typescript_prettier_use_local_config = 1
 let g:ale_json_prettier_use_local_config = 1
