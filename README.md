@@ -47,3 +47,4 @@ pip install powerline-gitstatus
 ```
 - [gitflow-autocomplete](https://github.com/bobthecow/git-flow-completion/wiki/Install-Bash-git-completion)
 - [autojump](https://github.com/wting/autojump)
+- [gron](https://github.com/tomnomnom/gron)
