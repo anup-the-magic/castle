@@ -113,4 +113,5 @@ alias 'pwrln.dir'='cd /usr/local/lib/python3.6/site-packages/powerline'
 
 [[ -s "/Users/anupkishore/.gvm/scripts/gvm" ]] && source "/Users/anupkishore/.gvm/scripts/gvm"
 
+source /usr/local/etc/bash_completion.d/git-completion.bash
 homeshick --quiet refresh
