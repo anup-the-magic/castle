@@ -7,9 +7,6 @@ if [ -f "$HOME/.asdf/asdf.sh" ]; then
   source "$HOME/.asdf/completions/asdf.bash"
 fi
 
-export NVM_DIR="$HOME/.nvm"
-. "$(brew --prefix nvm)/nvm.sh"
-
 export PATH="$PATH:/usr/local/sbin:$HOME/.nim/bin:$HOME/.nimble/bin:$HOME/.local/bin:./._tmp:."
 
 export PGDATA=/usr/local/var/postgres
