@@ -63,7 +63,7 @@ function rmpro {
 function project {
   if [ "$#" -le 1 ]
   then
-    echo "Usage: project from to" >&2
+    echo "Usage: project directory alias_name" >&2
     return
   fi
   ln -s ~/2s/$1 ~/.projects/$2;
