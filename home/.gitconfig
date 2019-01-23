@@ -16,11 +16,14 @@
   fff = !"git fetch && git merge --ff-only"
   nf = merge --no-ff
   noff = merge --no-ff
-  local-prune = !"git branch --merged | grep -Ev '\\*|master|develop|release' | xargs -n1 -p git branch -d"
+  local-prune = !"git branch --merged | grep -Ev '\\*|master|develop|release*' | xargs -n1 -p git branch -d"
+  edit-prune = !"git branch --merged | grep -Ev '\\*|master|develop' >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches"
   freebase = !"git fetch && git rebase"
   fix-local = !bash -c 'git push origin +${1:-develop}:$(git rev-parse --abbrev-ref HEAD)'
   pushup = push -u origin HEAD
   sync-tags = !"git tag -d $(git tag -l) && git fetch"
+  awesome-diff = !bash -c 'tig ${1:-develop} ${2:-HEAD} ^$(git merge-base --all ${1:-develop} ${2:-HEAD})~1'
+  wip = !"git add -A && git commit -nm 'WIP'"
 
   lg = !"git lg1"
   lg1 = !"git lg1-specific --all"
@@ -37,3 +40,6 @@
   defaultToUpstream = true
 [status]
   submodulesummary = 1
+
+[tag]
+  sort = v:refname
