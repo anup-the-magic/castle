@@ -1,7 +1,7 @@
 shopt -s globstar
 
 if [ -f "$HOME/.bashrc" ]; then
-    source "$HOME/.bashrc"
+  source "$HOME/.bashrc"
 fi
 
 alias 'ls'='ls -G'
@@ -17,7 +17,7 @@ alias ports='lsof -i -P -n | grep "(LISTEN)" | awk '"'"'{print $1 " (PID: " $2 "
 alias projects='la ~/.projects'
 alias go.alias='ln -s $(pwd) $GOROOT'
 
-function ports-on {
+function ports-on() {
   local port=$1
   lsof -i -P -n | grep "(LISTEN)" | grep "$port" | awk '{print $2}'
 }
@@ -33,7 +33,7 @@ alias 'resource'='unalias -a && source ~/.bash_profile'
 alias "finder.show_hidden"="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
 alias "finder.hide_all"="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
 
-function jsonl {
+function jsonl() {
   [ $# -ge 1 ] && [ -f "$1" ] && input="$1" || input="-"
   cat $input | sed = | sed 'N;s/\n/": /;s/^/"/;s/$/,/;$s/,$/}/' | sed '1s/^/{/'
 }
@@ -41,7 +41,7 @@ alias norg="gron --ungron"
 alias ungron="gron --ungron"
 alias decomment='sed -e "s/^-- //"'
 
-function gitall {
+function gitall() {
   local branch=$1
   local workdirs=${@:2}
   for folder in $workdirs; do
@@ -51,26 +51,27 @@ function gitall {
     cd -
   done
 }
-function config-search {
-  (cd ~/2s;
-  ag "\b$1\b" --ignore dist --ignore resources/ -W 100 e3/ server/ datastore-lib/ visualizations/ scala/)
+function config-search() {
+  (
+    cd ~/2s
+    ag "\b$1\b" --ignore dist --ignore resources/ -W 100 e3/ server/ datastore-lib/ visualizations/ scala/
+  )
 }
 
-function rmpro {
-  rm -i ~/.projects/$1;
+function rmpro() {
+  rm -i ~/.projects/$1
   resource
 }
-function project {
-  if [ "$#" -le 1 ]
-  then
+function project() {
+  if [ "$#" -le 1 ]; then
     echo "Usage: project directory alias_name" >&2
     return
   fi
-  ln -s ~/2s/$1 ~/.projects/$2;
-  sourceme;
+  ln -s ~/2s/$1 ~/.projects/$2
+  sourceme
 }
 
-function remind_me {
+function remind_me() {
   local msg=$1
 
   local duration=${2:-10}
@@ -79,20 +80,28 @@ function remind_me {
   remind_me "$msg" $duration
 }
 
-function export-toml {
+function export-toml() {
   usage="usage: $0 [-c|--config config] [-p|--prefix prefix] [-k|--key key]"
 
   config=config.toml
   prefix='\U'
   key=env
 
-  while [ $# -gt 0 ]
-  do
+  while [ $# -gt 0 ]; do
     case $1 in
-      -c|--config) config=$2; shift ;;
-      -p|--prefix) prefix=$2; shift ;;
-      -k|--key   ) key=$2; shift ;;
-      (*) echo "$usage" >&2
+    -c | --config)
+      config=$2
+      shift
+      ;;
+    -p | --prefix)
+      prefix=$2
+      shift
+      ;;
+    -k | --key)
+      key=$2
+      shift
+      ;;
+    *) echo "$usage" >&2 ;;
     esac
     shift
   done
@@ -102,8 +111,7 @@ function export-toml {
 
 PROJECTS=~/.projects/*
 shopt -s nullglob
-for D in $PROJECTS
-do
+for D in $PROJECTS; do
   alias "$(basename $D)"="cd -P $D"
 done
 shopt -u nullglob
