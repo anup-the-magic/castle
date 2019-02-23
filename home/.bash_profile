@@ -39,7 +39,9 @@ function jsonl() {
 }
 alias norg="gron --ungron"
 alias ungron="gron --ungron"
+alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias decomment='sed -e "s/^-- //"'
+alias runtime="ps -o etime= -p"
 
 function gitall() {
   local branch=$1
@@ -121,5 +123,4 @@ alias 'pwrln.dir'='cd /usr/local/lib/python3.6/site-packages/powerline'
 
 [[ -s "/Users/anupkishore/.gvm/scripts/gvm" ]] && source "/Users/anupkishore/.gvm/scripts/gvm"
 
-source /usr/local/etc/bash_completion.d/git-completion.bash
 homeshick --quiet refresh
