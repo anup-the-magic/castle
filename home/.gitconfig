@@ -6,7 +6,7 @@
 
 [push]
   default = simple
-  followTag = true
+  followTags = true
 [core]
   editor = vim
   excludesfile = ~/.gitignore_mac
