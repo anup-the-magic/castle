@@ -10,6 +10,8 @@
 [core]
   editor = vim
   excludesfile = ~/.gitignore_mac
+[fetch]
+  prune = true
 [alias]
   ch = checkout
   ff = merge --ff-only
@@ -40,6 +42,5 @@
   defaultToUpstream = true
 [status]
   submodulesummary = 1
-
 [tag]
   sort = v:refname
