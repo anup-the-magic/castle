@@ -51,6 +51,8 @@ Plug 'kchmck/vim-coffee-script' " Coffeescript
 Plug 'digitaltoad/vim-pug'      " Jade/pug format
 ""
 Plug 'fatih/vim-go' " Golang support
+""
+Plug 'shime/vim-livedown' " Markdown support
 
 Plug 'ctrlpvim/ctrlp.vim'  " quick file search in base directory
 Plug 'scrooloose/nerdtree' " directory tree file navigation
@@ -282,6 +284,12 @@ let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-stand
 
 " Ag
 nnoremap <leader>ag :Ag<Space>
+
+" Livedown, markdown
+let g:livedown_autorun = 1
+" let g:livedown_open = 1
+" let g:livedown_port = 1337
+let g:livedown_browser = 'google chrome'
 
 " colorschemes
 set t_Co=256 " Required for colorschemes
