@@ -1,15 +1,24 @@
-function! BuildYCM(info)
-  if a:info.status ==# 'installed' || a:info.force
-    !./install.py --cs-completer --go-completer --js-completer --java-completer
-  endif
-endfunction
+let language_client_opts = {}
+let language_client_opts['branch'] = 'next'
+let language_client_opts['do'] = 'bash install.sh'
 
 call plug#begin('~/.vim/plugged')
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') } " Autocomplete magic!
 Plug 'junegunn/vim-easy-align'                                " better? tabular
-Plug 'sbdchd/neoformat'                                       " autoformatter
 Plug 'wesQ3/vim-windowswap'                                   " swap panes w/ \ww
+
+" Syntax servers + autocomplete + fixers
 Plug 'w0rp/ale'                                               " like syntastic / neomake
+Plug 'autozimu/LanguageClient-neovim', language_client_opts   " language servers are the future?
+Plug 'junegunn/fzf'                                           " Super  customizable multiselect UI
+
+" deooplete                                                   " Async autocomplete
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
 Plug 'christoomey/vim-tmux-navigator' " C-[hjkl] pane/tmux split navigation
 Plug 'keith/tmux.vim'                 " simplifies some tmux/vim interactions
@@ -59,6 +68,7 @@ Plug 'scrooloose/nerdtree' " directory tree file navigation
 Plug 'mileszs/ack.vim'     " code search in Vim using ack. Required for Ag
 Plug 'rking/ag.vim'        " Uses Ack, but faster
 
+" =============== Colors ===============
 Plug 'altercation/vim-colors-solarized' " colorscheme -- solarized
 Plug 'aliou/moriarty.vim'               " colorscheme -- moriarty
 Plug 'tomsik68/vim-crystallite'         " colorscheme -- crystallite
@@ -115,6 +125,9 @@ set showmatch
 
 " Makes diffs look nicer
 set diffopt=filler,vertical
+
+" Don't warn when trying to replace current, unedited buffer
+set hidden
 
 " convenience files for editing configs
 nnoremap <leader>virc :botright vnew ~/.vimrc<CR>
@@ -179,8 +192,8 @@ endfunction
 
 augroup filetype_typescript
   au!
-  au FileType typescript nnoremap yt :YcmCompleter GetType <CR>
-  au FileType typescript nnoremap yd :YcmCompleter GoToDefinition <CR>
+  " au FileType typescript nnoremap yt :YcmCompleter GetType <CR>
+  " au FileType typescript nnoremap yd :YcmCompleter GoToDefinition <CR>
   au FileType typescript let b:dispatch = 'ts-node ' . GetTypescriptProject('%') . ' --strict false %'
   au FileType typescript nnoremap <leader>go :w<bar>Dispatch<CR>
 augroup END
@@ -215,14 +228,14 @@ augroup END
 
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['prettier']
-let g:ale_fixers['json'] = ['prettier']
-let g:ale_fixers['yaml'] = ['prettier']
+let g:ale_fixers['json']       = ['prettier']
+let g:ale_fixers['yaml']       = ['prettier']
 let g:ale_fixers['typescript'] = ['prettier']
-let g:ale_fixers['markdown'] = ['prettier']
-let g:ale_fixers['elm'] = ['format']
-let g:ale_fixers['scala'] = ['scalafmt']
-let g:ale_fixers['haskell'] = ['hfmt']
-let g:ale_fixers['sh'] = ['shfmt']
+let g:ale_fixers['markdown']   = ['prettier']
+let g:ale_fixers['elm']        = ['format']
+let g:ale_fixers['scala']      = ['scalafmt']
+let g:ale_fixers['haskell']    = ['hfmt']
+let g:ale_fixers['sh']         = ['shfmt']
 
 let g:ale_linters = {}
 " Remove stack-ghc, ghc-mod since they don't maintain cabal relative pathing
@@ -252,12 +265,17 @@ nnoremap <leader>d :ALEDetail<CR>
 "   autocmd BufWritePre,InsertLeave *.elm silent! ALEFix
 " augroup END
 
-"" YCM YouCompleteMe
-let g:ycm_autoclose_preview_window_after_completion = 1
+" LanguageClient, language-server
+let g:LanguageClient_serverCommands = {}
+let g:LanguageClient_serverCommands['typescript'] = ['typescript-language-server', '--stdio']
 
-let g:ycm_semantic_triggers = {}
-let g:ycm_semantic_triggers['elm'] = ['.']
-" let g:loaded_youcompleteme = 1
+nnoremap <leader>l :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> <leader>gi :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> <leader>gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <leader>gr :call LanguageClient#textDocument_rename()<CR>
+
+" Deoplete
+let g:deoplete#enable_at_startup = 1
 
 " Powerline
 " NOTE: requires outside setup
