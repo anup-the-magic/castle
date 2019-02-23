@@ -216,10 +216,13 @@ augroup END
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['prettier']
 let g:ale_fixers['json'] = ['prettier']
+let g:ale_fixers['yaml'] = ['prettier']
 let g:ale_fixers['typescript'] = ['prettier']
+let g:ale_fixers['markdown'] = ['prettier']
 let g:ale_fixers['elm'] = ['format']
 let g:ale_fixers['scala'] = ['scalafmt']
 let g:ale_fixers['haskell'] = ['hfmt']
+let g:ale_fixers['sh'] = ['shfmt']
 
 let g:ale_linters = {}
 " Remove stack-ghc, ghc-mod since they don't maintain cabal relative pathing
@@ -227,7 +230,6 @@ let g:ale_linters['haskell'] =
       \ [ 'hlint'
       \ , 'hdevtools'
       \ , 'hfmt'
-      \ , 'stack-ghc'
       \ , 'stack-build'
       \ ]
 let g:ale_linters['elixir'] = ['credo']
@@ -250,11 +252,12 @@ nnoremap <leader>d :ALEDetail<CR>
 "   autocmd BufWritePre,InsertLeave *.elm silent! ALEFix
 " augroup END
 
-"" YCM
+"" YCM YouCompleteMe
 let g:ycm_autoclose_preview_window_after_completion = 1
 
 let g:ycm_semantic_triggers = {}
 let g:ycm_semantic_triggers['elm'] = ['.']
+" let g:loaded_youcompleteme = 1
 
 " Powerline
 " NOTE: requires outside setup
@@ -265,7 +268,7 @@ python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
 
-set runtimepath+=/usr/local/lib/python3.6/site-packages/powerline/bindings/vim
+set runtimepath+=/usr/local/lib/python3.7/site-packages/powerline/bindings/vim
 
 let g:Powerline_symbols='fancy'
 set encoding=utf-8
@@ -283,7 +286,6 @@ let g:elm_jump_to_error = 0
 let g:elm_make_output_file = 'elm.js'
 let g:elm_make_show_warnings = 1
 let g:elm_syntastic_show_warnings = 1
-let g:elm_browser_command = ''
 let g:elm_detailed_complete = 1
 let g:elm_format_autosave = 1
 let g:elm_format_fail_silently = 1
@@ -292,6 +294,7 @@ let g:elm_setup_keybindings = 1
 " NERDTree
 nnoremap <leader>ne :NERDTreeToggle<CR>
 nnoremap <leader>no :NERDTreeFocus<CR>
+nnoremap <leader>nf :NERDTreeFind<CR>
 
 " CtrlP, ctrl-p
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
