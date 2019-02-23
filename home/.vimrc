@@ -14,17 +14,18 @@ Plug 'w0rp/ale'                                               " like syntastic /
 Plug 'christoomey/vim-tmux-navigator' " C-[hjkl] pane/tmux split navigation
 Plug 'keith/tmux.vim'                 " simplifies some tmux/vim interactions
 
-Plug 'tpope/vim-commentary'  " gcc/gc to comment a line/lines
-Plug 'tpope/vim-abolish'     " makes S a more powerful s
-Plug 'tpope/vim-repeat'      " allows using `.` for repeating Tim Pope's things
-Plug 'tpope/vim-speeddating' " date and time autoincrementer with <C-A>
-Plug 'tpope/vim-surround'    " surround with brackets, braces, or anything
-Plug 'tpope/vim-unimpaired'  " [<command> and ]<command> commands
-Plug 'tpope/vim-fugitive'    " Git happiness
-Plug 'tpope/vim-dispatch'    " Async fire off terminal commands!
-" Plug 'tpope/vim-fireplace' " Clojure repl
-" Plug 'tpope/vim-classpath' " Fixes find and gf in Java
-" Plug 'tpope/vim-salve'     " makes vim-fireplace better
+Plug 'PeterRincker/vim-argumentative' " allows navigating and modifying comma separated lists
+Plug 'tpope/vim-commentary'           " gcc/gc to comment a line/lines
+Plug 'tpope/vim-abolish'              " makes S a more powerful s
+Plug 'tpope/vim-repeat'               " allows using `.` for repeating Tim Pope's things
+Plug 'tpope/vim-speeddating'          " date and time autoincrementer with <C-A>
+Plug 'tpope/vim-surround'             " surround with brackets, braces, or anything
+Plug 'tpope/vim-unimpaired'           " [<command> and ]<command> commands
+Plug 'tpope/vim-fugitive'             " Git happiness
+Plug 'tpope/vim-dispatch'             " Async fire off terminal commands!
+" Plug 'tpope/vim-fireplace'          " Clojure repl
+" Plug 'tpope/vim-classpath'          " Fixes find and gf in Java
+" Plug 'tpope/vim-salve'              " makes vim-fireplace better
 
 Plug 'airblade/vim-gitgutter' " Provides branch changes in the gutter
 
