@@ -107,6 +107,7 @@ set ruler
 " Always show command bar
 set laststatus=2
 set showtabline=2
+set cursorline
 " Tab autocomplete in command bar will show options in a line
 set wildmenu
 " Highlights matching brace
@@ -169,6 +170,19 @@ augroup filetype_markdown
   au FileType markdown setlocal wrap
   au FileType markdown setlocal linebreak
   au FileType markdown setlocal nolist
+augroup END
+
+function! GetTypescriptProject(buffer) abort
+  let l:file = ale#path#FindNearestFile(a:buffer, 'tsconfig.json')
+  return !empty(l:file) ? '--project ' . l:file : ''
+endfunction
+
+augroup filetype_typescript
+  au!
+  au FileType typescript nnoremap yt :YcmCompleter GetType <CR>
+  au FileType typescript nnoremap yd :YcmCompleter GoToDefinition <CR>
+  au FileType typescript let b:dispatch = 'ts-node ' . GetTypescriptProject('%') . ' --strict false %'
+  au FileType typescript nnoremap <leader>go :w<bar>Dispatch<CR>
 augroup END
 
 " augroup filetype_golang
