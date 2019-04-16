@@ -28,7 +28,8 @@ if [ -f "$HOME/.asdf/asdf.sh" ]; then
   source "$HOME/.asdf/completions/asdf.bash"
 fi
 
-if [ -x "$(command -v homeshick)" ]; then
+if [ -f "$HOME/.homesick/repos/homeshick/homeshick.sh" ]; then
   source "$HOME/.homesick/repos/homeshick/homeshick.sh"
   source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+  homeshick --quiet refresh
 fi
