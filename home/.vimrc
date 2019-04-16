@@ -87,7 +87,7 @@ set backspace=2
 
 " utility
 inoremap jk <ESC>
-inoremap kj <ESC>
+
 command! W w
 command! Wq wq
 command! Wqa wqa
@@ -221,17 +221,19 @@ let g:ale_fixers['typescript'] = ['prettier']
 let g:ale_fixers['markdown'] = ['prettier']
 let g:ale_fixers['elm'] = ['format']
 let g:ale_fixers['scala'] = ['scalafmt']
-let g:ale_fixers['haskell'] = ['hfmt']
 let g:ale_fixers['sh'] = ['shfmt']
+let g:ale_fixers['haskell'] = ['brittany']
 
 let g:ale_linters = {}
 " Remove stack-ghc, ghc-mod since they don't maintain cabal relative pathing
+" note: we install hlint using stack install. Alas.
 let g:ale_linters['haskell'] =
       \ [ 'hlint'
       \ , 'hdevtools'
       \ , 'hfmt'
       \ , 'stack-build'
       \ ]
+     " \ , 'stack-ghc'
 let g:ale_linters['elixir'] = ['credo']
 let g:ale_linters['go'] = ['gofmt', 'goimports', 'go vet', 'gotype', 'go build', 'gosimple']
 
