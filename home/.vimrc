@@ -66,6 +66,15 @@ Plug 'dracula/Vim'                      " colorscheme -- dracula
 Plug 'marciomazza/vim-brogrammer-theme' " colorscheme -- brogrammer
 call plug#end()
 
+function! SourceIfExists(f)
+  if filereadable(expand(a:f))
+     let file = expand(a:f)
+     exec 'source ' . file
+  endif
+endfunction
+
+call SourceIfExists("~/.company/.vimrc")
+
 " ====================== VIM ======================
 " makes vnew and new behave normally
 set splitright
@@ -261,18 +270,6 @@ let g:ycm_semantic_triggers = {}
 let g:ycm_semantic_triggers['elm'] = ['.']
 " let g:loaded_youcompleteme = 1
 
-" Powerline
-" NOTE: requires outside setup
-let g:powerline_pycmd='py3'
-set guifont=Droid\ Sans\ Mono\ for\ Powerline:h12
-
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
-
-set runtimepath+=/usr/local/lib/python3.7/site-packages/powerline/bindings/vim
-
-let g:Powerline_symbols='fancy'
 set encoding=utf-8
 set fillchars+=stl:\ ,stlnc:\
 set termencoding=utf-8
