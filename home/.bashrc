@@ -76,3 +76,7 @@ fi
 
 [ -x "$(command -v kitty)" ] && source <(kitty + complete setup bash)
 [ -f "$HOME/.company/.bashrc" ] && source "$HOME/.company/.bashrc"
+
+if [ -f "$HOME/.company/.bashrc" ]; then source "$HOME/.company/.bash_prompt"
+elif [ -f "$HOME/.bash_prompt" ]; then source "$HOME/.bash_prompt";
+fi
