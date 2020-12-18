@@ -5,3 +5,7 @@ if [[ -f $HOMESHICK_SRC ]]; then
 else
   echo "Warning: Homeshick isn't installed!" >&2
 fi
+
+if grep -qEi "microsoft" /proc/version &> /dev/null; then
+  alias open="explorer.exe"
+fi

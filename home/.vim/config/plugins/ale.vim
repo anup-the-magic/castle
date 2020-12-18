@@ -4,7 +4,7 @@ Plug 'w0rp/ale'
 " let g:ale_lint_on_text_changed = 'never'
 let g:ale_fixers = {}
 let g:ale_fixers['elm'] = ['format']
-let g:ale_fixers['haskell'] = ['brittany']
+let g:ale_fixers['haskell'] = ['ormolu']
 let g:ale_fixers['javascript'] = ['prettier']
 let g:ale_fixers['json'] = ['prettier']
 let g:ale_fixers['markdown'] = ['prettier']
@@ -42,6 +42,7 @@ let g:ale_linters['java'] =
 
 let g:ale_set_loc_list = 1
 let g:ale_set_quickfix = 0
+let g:ale_haskell_ormolu_executable = 'stack'
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_typescript_prettier_use_local_config = 1
 let g:ale_json_prettier_use_local_config = 1

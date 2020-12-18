@@ -1,6 +1,7 @@
 call plug#begin('~/.vim/plugged')
 call SourceIfExists('~/.vim/config/plugins/vim-easy-align.vim') " better? tabular
 call SourceIfExists('~/.vim/config/plugins/ale.vim')            " Autoformatter + linter
+call SourceIfExists('~/.vim/config/plugins/coc.nvim.vim') " language servers!
 
 Plug 'wesQ3/vim-windowswap'           " swap panes w/ \ww
 Plug 'christoomey/vim-tmux-navigator' " C-[hjkl] pane/tmux split navigation
@@ -46,7 +47,6 @@ Plug 'dracula/Vim'                      " colorscheme -- dracula
 Plug 'marciomazza/vim-brogrammer-theme' " colorscheme -- brogrammer
 call plug#end()
 
-"" call SourceIfExists('~/.vim/config/plugins/coc.nvim.vim') " language servers!
 "" Plug 'tpope/vim-fireplace'          " Clojure repl
 "" Plug 'tpope/vim-classpath'          " Fixes find and gf in Java
 "" Plug 'tpope/vim-salve'              " makes vim-fireplace better

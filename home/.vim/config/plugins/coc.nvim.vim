@@ -1,4 +1,4 @@
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "" coc.nvim, CoC
 set hidden " Required for TextEdit (rename, effectively)
@@ -53,7 +53,7 @@ function! s:show_documentation()
 endfunction
 
 " Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
+" autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
@@ -105,3 +105,20 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+"" COC CONFIG
+let g:coc_user_config = { 'languageserver': {} }
+
+let s:hie = {}
+let s:hie['command'] = ['hie']
+let s:hie['scopes'] = ['source.haskell']
+let s:hie['syntaxes'] = ['Packages/Haskell/Haskell.sublime-syntax']
+let s:hie['languageId'] = 'haskell'
+let g:coc_user_config['languageserver']['haskell-ide-engine'] = s:hie
+
+let s:elmlang = {}
+let s:elmlang['command'] = 'elm-language-server'
+let s:elmlang['filetypes'] = ['elm']
+let s:elmlang['rootPaterns'] = ['elm.json']
+let s:elmlang['initializationOptions'] = { 'elmAnalyseTrigger': 'change' }
+let g:coc_user_config['languageserver']['elmlang'] = s:elmlang

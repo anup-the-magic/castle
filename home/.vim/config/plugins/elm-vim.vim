@@ -1,4 +1,4 @@
-Plug 'ElmCast/elm-vim'
+Plug 'elmcast/elm-vim'
 
 "" Elm, elm-vim, ElmCast
 let g:elm_jump_to_error = 0
