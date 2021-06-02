@@ -2,6 +2,15 @@ if (( $+commands[brew] )); then
   GNU_SED_PATH=$(brew --prefix)/opt/gnu-sed/libexec/gnubin
 fi
 
+# ----- Setup autocompletion targets
+[ -x "$(command -v kitty)" ] && source <(kitty + complete setup bash)
+[ -f "$HOME/.company/.zshrc" ] && source "$HOME/.company/.zshrc"
+
+# ----- Prompt
+if [ -f "$HOME/.company/.zsh_prompt" ]; then source "$HOME/.company/.zsh_prompt"
+elif [ -f "$HOME/.zsh_prompt" ]; then source "$HOME/.zsh_prompt";
+fi
+
 bindkey -v
 export KEYTIMEOUT=10
 bindkey -M viins 'jk' vi-cmd-mode
@@ -28,5 +37,4 @@ if $LOADED_PATH; then
   export PATH=${(j/:/)TEMP_PATH}
 fi
 
-export EDITOR='nvim'
-if [ -e /home/anup/.nix-profile/etc/profile.d/nix.sh ]; then . /home/anup/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+[ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && . "$HOME/.nix-profile/etc/profile.d/nix.sh" # added by Nix installer

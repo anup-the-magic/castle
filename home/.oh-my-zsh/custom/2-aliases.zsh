@@ -4,5 +4,9 @@
     git branch -a | grep $1 | xargs -o tig --all
   }
 }
+
 (( $+commands[thefuck] )) && eval $(thefuck --alias)
-(( $+commands[nvim] ))    && alias vim=nvim
+(( $+commands[nvim] ))    && {
+  export EDITOR=nvim
+  alias vim=nvim
+}
