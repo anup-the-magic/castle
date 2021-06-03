@@ -113,8 +113,6 @@ let g:coc_user_config = { 'languageserver': {} }
 let g:coc_user_config['codeLens.enable'] = 'true'
 
 let g:coc_user_config['diagnostic.maxWindowHeight'] = 20
-let g:coc_user_config['diagnostic.maxWindowHeight'] = 20
-let g:coc_user_config['diagnostic.maxWindowHeight'] = 20
 
 let s:hie = {}
 let s:hie['command'] = 'hie-wrapper'
