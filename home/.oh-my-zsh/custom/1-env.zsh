@@ -1,5 +1,7 @@
 if (( $+commands[brew] )); then
   GNU_SED_PATH=$(brew --prefix)/opt/gnu-sed/libexec/gnubin
+
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 fi
 
 # ----- Setup autocompletion targets
