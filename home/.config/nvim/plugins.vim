@@ -8,6 +8,7 @@ call plug#begin()
 source ~/.config/nvim/plugins/vim-easy-align.vim " better? tabular
 source ~/.config/nvim/plugins/ale.vim            " Autoformatter + linter
 source ~/.config/nvim/plugins/coc.nvim.vim       " language servers!
+source ~/.config/nvim/plugins/fzf.vim       " language servers!
 
 Plug 'wesQ3/vim-windowswap'           " swap panes w/ \ww
 Plug 'christoomey/vim-tmux-navigator' " C-[hjkl] pane/tmux split navigation
