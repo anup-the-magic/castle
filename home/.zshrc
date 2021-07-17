@@ -9,6 +9,7 @@ export ZSH="$HOME/.oh-my-zsh"
 
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
+bindkey -M vicmd 'cc' vi-change-whole-line
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 HYPHEN_INSENSITIVE="true"
