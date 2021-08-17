@@ -6,7 +6,3 @@
 }
 
 (( $+commands[thefuck] )) && eval $(thefuck --alias)
-(( $+commands[nvim] ))    && {
-  export EDITOR=nvim
-  alias vim=nvim
-}

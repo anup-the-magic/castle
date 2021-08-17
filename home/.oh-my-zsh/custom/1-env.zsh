@@ -40,3 +40,9 @@ if $LOADED_PATH; then
 fi
 
 [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && . "$HOME/.nix-profile/etc/profile.d/nix.sh" # added by Nix installer
+
+(( $+commands[nvim] ))    && {
+  export EDITOR=nvim
+  export GIT_EDITOR=$EDITOR
+  alias vim=nvim
+}
