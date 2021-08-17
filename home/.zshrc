@@ -17,10 +17,6 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# oh-my-zsh tmux plugin
-ZSH_TMUX_AUTOSTART="true"
-ZSH_TMUX_AUTOQUIT="true"
-
 # ASDF requires fpath modifications prior to plugins
 # Homeshick requires fpath modifications prior to plugins, but after sourcing
 [ -f "$HOME/.homesick/repos/homeshick/homeshick.sh" ] && source "$HOME/.homesick/repos/homeshick/homeshick.sh"
