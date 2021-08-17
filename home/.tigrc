@@ -1,8 +1,16 @@
 bind generic g none
-bind main <Esc>c ?git ch %(commit)
+bind main c @sh -c "git branch --points-at=%(commit) | \
+                    sed -n '/^*/ {n;p}' | \
+                    (cat -; echo %(commit)) | \
+                    head -1 | \
+                    xargs git checkout"
+
 bind status + !git commit --amend --no-edit
 bind status A !git add -N %(file)
 
-set refresh-mode = after-command
+set refresh-mode = auto
 set ignore-case = smart-case
 set main-view-date = relative
+set reference-format = [branch] <tag> {remote} ~replace~ -->_head_<-- <<local-tag>>
+
+color main-head magenta default bold
