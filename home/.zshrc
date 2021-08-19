@@ -38,7 +38,6 @@ plugins=(
   gitfast
   osx
   ripgrep
-  tmux
   web-search
 )
 
