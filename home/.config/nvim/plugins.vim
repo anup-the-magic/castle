@@ -26,14 +26,15 @@ Plug 'tpope/vim-dispatch'             " Async fire off terminal commands!
 
 Plug 'airblade/vim-gitgutter' " Provides branch changes in the gutter
 
-Plug 'mileszs/ack.vim'                                        " code search in Vim using ack. Required for Ag
+Plug 'mileszs/ack.vim'                         " code search in Vim using ack. Required for Ag
 source ~/.config/nvim/plugins/vim-livedown.vim " Markdown live preview
 source ~/.config/nvim/plugins/ctrlp.vim        " quick file search in base directory
 source ~/.config/nvim/plugins/nerdtree.vim     " Filetree explorer
 source ~/.config/nvim/plugins/ag.vim           " Like Ack but faster
 " =============== Syntax ===============
-Plug 'elzr/vim-json'                                     " makes jsons more readable
-Plug 'bfrg/vim-jq'                                       " ultra-useful jq filetype plugin
+Plug 'elzr/vim-json'      " makes jsons more readable
+Plug 'kevinoid/vim-jsonc' " add JSON-C
+Plug 'bfrg/vim-jq'        " ultra-useful jq filetype plugin
 
 source ~/.config/nvim/plugins/elm-vim.vim " Elm filetype + formatter
 Plug 'itchyny/vim-haskell-indent'                        " Pre-indent code so hindent doesn't struggle so much

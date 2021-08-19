@@ -1,0 +1,57 @@
+// vim: ft=jsonc
+{
+  "codeLens.enable": true,
+  "diagnostic.messageTarget": "echo",
+  "diagnostic.maxWindowHeight": 20,
+  "coc.preferences.formatOnType": true,
+  "metals.scalafmtConfigPath": "/google/src/files/head/depot/google3/devtools/scala/scalafmt.conf",
+  "languageserver": {
+    // haskell
+    "haskell-ide-engine": {
+      "command": "hie-wrapper",
+      "scopes": ["source.haskell"],
+      "syntaxes": ["Packages/Haskell/Haskell.sublime-syntax"],
+      "filetypes": ["haskell"],
+      "languageId": "haskell"
+    },
+    "haskell-language-server-wrapper": {
+      "command": "haskell-language-server-wrapper",
+      "args": ["--lsp"],
+      "rootPatterns": [
+        "*.cabal",
+        "stack.yaml",
+        "cabal.project",
+        "package.yaml",
+        "hie.yaml"
+      ],
+      "filetypes": ["haskell", "lhaskell"],
+      "languageId": "haskell",
+      "initializationOptions": { "hlintOn": 1 }
+    },
+
+    // elm
+    "elmlang": {
+      "command": "elm-language-server",
+      "filetypes": ["elm"],
+      "rootPatterns": ["elm.json"],
+      "initializationOptions": {"elmAnalyseTrigger": "change"}
+    },
+
+    // Work
+    "ciderlsp": {
+      "command": "/google/bin/releases/editor-devtools/ciderlsp",
+      "args": ["--tooltag=coc-nvim", "--noforward_sync_responses"],
+      "filetypes": ["c", "cpp", "go", "proto", "textproto", "java"]
+    },
+    "kythelsp": {
+      "command": "/google/bin/releases/grok/tools/kythe_languageserver",
+      "args": ["--google3"],
+      "filetypes": ["python", "go", "java", "cpp", "proto"]
+    },
+    "intellij-lsp": {
+      "host": "localhost",
+      "port": "5800",
+      "filetypes": ["java", "scala", "sbt"]
+    }
+  }
+}
