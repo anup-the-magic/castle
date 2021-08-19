@@ -11,7 +11,9 @@ bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 bindkey -M vicmd 'cc' vi-change-whole-line
 
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# use manual installation of powerlevel10k
+[[ -f "$HOME/powerlevel10k/powerlevel10k.zsh-theme" ]] && ZSH_THEME="powerlevel10k/powerlevel10k"
+
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
@@ -43,7 +45,6 @@ plugins=(
 
 [ -f "$HOME/.completions.zsh" ] && source "$HOME/.completions.zsh"
 source $ZSH/oh-my-zsh.sh
-# source ~/.purepower
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
