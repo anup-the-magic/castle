@@ -1,18 +1,17 @@
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
     silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    autocmd VimEnter * PlugInstall --sync | call SourceIfExists('$MYVIMRC')
 endif
 
 call plug#begin()
-source ~/.config/nvim/plugins/vim-easy-align.vim " better? tabular
-source ~/.config/nvim/plugins/ale.vim            " Autoformatter + linter
-source ~/.config/nvim/plugins/coc.nvim.vim       " language servers!
-source ~/.config/nvim/plugins/fzf.vim       " language servers!
+call SourceIfExists('~/.config/nvim/plugins/vim-easy-align.vim') " better? tabular
+call SourceIfExists('~/.config/nvim/plugins/coc.nvim.vim')       " language servers!
+call SourceIfExists('~/.config/nvim/plugins/fzf.vim')       " language servers!
+call SourceIfExists('~/.config/nvim/plugins/vista.vim')          " language servers, tree view
 
 Plug 'wesQ3/vim-windowswap'           " swap panes w/ \ww
 Plug 'christoomey/vim-tmux-navigator' " C-[hjkl] pane/tmux split navigation
-Plug 'keith/tmux.vim'                 " simplifies some tmux/vim interactions
 
 Plug 'PeterRincker/vim-argumentative' " allows navigating and modifying comma separated lists
 Plug 'tpope/vim-commentary'           " gcc/gc to comment a line/lines
@@ -26,17 +25,19 @@ Plug 'tpope/vim-dispatch'             " Async fire off terminal commands!
 
 Plug 'airblade/vim-gitgutter' " Provides branch changes in the gutter
 
-Plug 'mileszs/ack.vim'                         " code search in Vim using ack. Required for Ag
-source ~/.config/nvim/plugins/vim-livedown.vim " Markdown live preview
-source ~/.config/nvim/plugins/ctrlp.vim        " quick file search in base directory
-source ~/.config/nvim/plugins/nerdtree.vim     " Filetree explorer
-source ~/.config/nvim/plugins/ag.vim           " Like Ack but faster
+Plug 'mileszs/ack.vim'                                         " code search in Vim using ack. Required for Ag
+call SourceIfExists('~/.config/nvim/plugins/vim-livedown.vim') " Markdown live preview
+call SourceIfExists('~/.config/nvim/plugins/ctrlp.vim')        " quick file search in base directory
+call SourceIfExists('~/.config/nvim/plugins/nerdtree.vim')     " Filetree explorer
+call SourceIfExists('~/.config/nvim/plugins/ag.vim')           " Like Ack but faster
+Plug 'will133/vim-dirdiff'                                    " Allow diffing on directories
+
 " =============== Syntax ===============
 Plug 'elzr/vim-json'      " makes jsons more readable
 Plug 'kevinoid/vim-jsonc' " add JSON-C
 Plug 'bfrg/vim-jq'        " ultra-useful jq filetype plugin
 
-source ~/.config/nvim/plugins/elm-vim.vim " Elm filetype + formatter
+call SourceIfExists('~/.config/nvim/plugins/elm-vim.vim') " Elm filetype + formatter
 Plug 'itchyny/vim-haskell-indent'                        " Pre-indent code so hindent doesn't struggle so much
 Plug 'pangloss/vim-javascript'                           " adds ES6 highlighting, alongside vim-jsx
 Plug 'leafgarland/typescript-vim'                        " typescript ft

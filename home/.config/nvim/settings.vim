@@ -2,25 +2,31 @@
 set splitright
 set splitbelow
 
+" Fix undofiles
+set undofile
+set undodir=~/.vim/undos
+
 " Tabbing
 " Make tabbing intuitive
+set autoindent
 set expandtab
 " Tab sizes
 set tabstop=4
 set shiftwidth=2
 set softtabstop=2
+set backspace=2
 
 " utility
 inoremap jk <ESC>
 
 command! W w
+cmap w!! w !sudo tee > /dev/null %
 command! Wq wq
 command! Wqa wqa
 command! Q q
 
 " Allow mouse
 set mouse+=a
-
 " Clipboard goes into paste
 set clipboard^=unnamed,unnamedplus
 let g:clipboard = {
@@ -39,11 +45,14 @@ let g:clipboard = {
 
 " Line numbers
 set number
+set ruler
 
-" Always show tab bar
+" Always show command bar
+set laststatus=2
 set showtabline=2
 set cursorline
-
+" Tab autocomplete in command bar will show options in a line
+set wildmenu
 " Highlights matching brace
 set showmatch
 
@@ -51,7 +60,7 @@ set showmatch
 set diffopt=filler,vertical
 
 " convenience files for editing configs
-nnoremap <leader>virc :botright vnew ~/.config/nvim/init.vim<CR>
+nnoremap <leader>virc :botright vnew $MYVIMRC<CR>
 nnoremap <leader>mux :botright vnew ~/.tmux.conf<CR>
 nnoremap <leader>zsh  :botright vnew ~/.oh-my-zsh/custom<CR>
 nnoremap <leader>brc  :botright vnew ~/.bashrc<CR>
@@ -71,7 +80,11 @@ nnoremap <leader>; mcgg=G`c
 " Fix searching
 set ignorecase
 set smartcase
+set wildignorecase
+" Search as you type
+set incsearch
 " Highlight all matches
+set hlsearch
 nnoremap <leader>8 :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 " clear searches with <leader>=
 nnoremap <leader>= :nohlsearch <bar> :redraw! <CR>
@@ -82,7 +95,8 @@ nnoremap <leader>z :tabnew % <CR>
 " autocommands
 augroup local
   autocmd!
-  au BufWritePost ~/.vimrc,~/.vim/config/*.vim so $MYVIMRC " source vimrc on changes
+  " source vimrc on changes
+  au BufWritePost ~/.vimrc,~/.vim/config/*.vim,~/.company/.vimrc,~/company/vimrc so $MYVIMRC
   au BufWritePost ~/.config/nvim/*.vim,~/.config/nvim/plugins/*.vim so $MYVIMRC " source vimrc on changes
 
   " source .tmux.conf on changes
@@ -106,13 +120,20 @@ augroup filetype_markdown
 augroup END
 
 function! SequenceFormatter()
+  execute 'normal mt'
+  execute '%s/\v\s+\[/ [/g'
   execute 'g/^participant/m0'
   execute 'g/^participant/m0'
   execute '0,?participant?EasyAlign/\bas\b/'
 
   execute 'g/^[tT]itle/m0'
 
-  execute '?participant?,$EasyAlign/[/'
+  execute '0,?participant?EasyAlign/[/'
+  execute '?participant?+1,$EasyAlign/[/'
+  execute '%s/\s*]/ ]/'
+  execute '%s/[\s*/[ /'
+  execute '%s/\s*=\s*/=/g'
+  execute 'normal `t'
 endfunction
 
 
