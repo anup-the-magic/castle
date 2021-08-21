@@ -41,6 +41,8 @@ fi
 
 [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && . "$HOME/.nix-profile/etc/profile.d/nix.sh" # added by Nix installer
 
+export LESS=FRX
+
 (( $+commands[nvim] ))    && {
   export EDITOR=nvim
   export GIT_EDITOR=$EDITOR
