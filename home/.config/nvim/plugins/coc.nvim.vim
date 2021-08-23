@@ -1,4 +1,6 @@
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+
+let g:coc_global_extensions = ['coc-json', 'coc-metals', 'coc-prettier', 'coc-tsserver']
 
 "" coc.nvim, CoC
 set hidden " Required for TextEdit (rename, effectively)
