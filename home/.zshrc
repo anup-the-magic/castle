@@ -12,7 +12,7 @@ bindkey -M viins 'jk' vi-cmd-mode
 bindkey -M vicmd 'cc' vi-change-whole-line
 
 # use manual installation of powerlevel10k
-[[ -f "$HOME/powerlevel10k/powerlevel10k.zsh-theme" ]] && ZSH_THEME="powerlevel10k/powerlevel10k"
+[[ -f "$HOME/powerlevel10k/powerlevel10k.zsh-theme" ]] && . "$HOME/powerlevel10k/powerlevel10k.zsh-theme"
 
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
@@ -36,7 +36,7 @@ plugins=(
   fasd
   fzf
   gitfast
-  osx
+  macos
   ripgrep
   web-search
 )

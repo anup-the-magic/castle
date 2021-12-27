@@ -2,8 +2,7 @@
 {
   "codeLens.enable": true,
   "diagnostic.messageTarget": "echo",
-  "diagnostic.maxWindowHeight": 20,
-  "coc.preferences.formatOnType": true,
+  "coc.preferences.formatOnSaveFiletypes": ["*"],
   "metals.scalafmtConfigPath": "/google/src/files/head/depot/google3/devtools/scala/scalafmt.conf",
   "languageserver": {
     // haskell
@@ -24,9 +23,12 @@
         "package.yaml",
         "hie.yaml"
       ],
-      "filetypes": ["haskell", "lhaskell"],
+      "filetypes": ["hs", "lhs", "haskell", "lhaskell"],
       "languageId": "haskell",
-      "initializationOptions": { "hlintOn": 1 }
+      "initializationOptions": {
+        "hlintOn": 1,
+        "haskell.formattingProvider": "fourmolu"
+      }
     },
 
     // elm
@@ -34,7 +36,7 @@
       "command": "elm-language-server",
       "filetypes": ["elm"],
       "rootPatterns": ["elm.json"],
-      "initializationOptions": {"elmAnalyseTrigger": "change"}
+      "initializationOptions": { "elmAnalyseTrigger": "change" }
     },
 
     // Work

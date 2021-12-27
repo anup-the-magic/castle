@@ -80,6 +80,9 @@ augroup end
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
+nmap <leader><leader>v <plug>(coc-codelens-action)
+nmap <leader><leader>o <plug>(coc-openlink)
+
 " Remap for do codeAction of current line
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
