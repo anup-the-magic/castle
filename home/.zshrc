@@ -10,6 +10,7 @@ export ZSH="$HOME/.oh-my-zsh"
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 bindkey -M vicmd 'cc' vi-change-whole-line
+bindkey -M vicmd 'C-r' history-inc-search
 
 # use manual installation of powerlevel10k
 [[ -f "$HOME/powerlevel10k/powerlevel10k.zsh-theme" ]] && ZSH_THEME="powerlevel10k/powerlevel10k"

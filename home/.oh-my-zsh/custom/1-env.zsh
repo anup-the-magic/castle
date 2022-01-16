@@ -4,6 +4,12 @@ if (( $+commands[brew] )); then
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 fi
 
+[ -d /usr/share/doc/fzf ] && {
+  source /usr/share/doc/fzf/examples/key-bindings.zsh
+  source /usr/share/doc/fzf/examples/completion.zsh
+}
+
+
 # ----- Setup autocompletion targets
 [ -x "$(command -v kitty)" ] && source <(kitty + complete setup bash)
 [ -f "$HOME/.company/.zshrc" ] && source "$HOME/.company/.zshrc"
