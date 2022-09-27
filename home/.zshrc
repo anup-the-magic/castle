@@ -36,9 +36,7 @@ plugins=(
   fasd
   fzf
   gitfast
-  osx
   ripgrep
-  web-search
 )
 
 [ -f "$HOME/.completions.zsh" ] && source "$HOME/.completions.zsh"

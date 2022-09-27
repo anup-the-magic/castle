@@ -17,6 +17,8 @@ bindkey -v
 export KEYTIMEOUT=10
 bindkey -M viins 'jk' vi-cmd-mode
 
+unsetopt correct_all
+
 if $LOADED_PATH; then
   export LOADED_PATH=true
   TEMP_PATH=(
@@ -41,7 +43,7 @@ fi
 
 [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && . "$HOME/.nix-profile/etc/profile.d/nix.sh" # added by Nix installer
 
-export LESS=FRX
+export LESS='FRX-S --mouse'
 
 (( $+commands[nvim] ))    && {
   export EDITOR=nvim
