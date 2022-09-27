@@ -40,6 +40,7 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 nmap <silent> [[ <Plug>(coc-diagnostic-prev)
 nmap <silent> ]] <Plug>(coc-diagnostic-next)
 nmap <silent> ?? <Plug>(coc-diagnostic-info)
+nmap ?! :echo b:coc_current_function<CR>
 
 " Remap keys for gotos
 nmap <silent> <leader>yd <Plug>(coc-definition)
