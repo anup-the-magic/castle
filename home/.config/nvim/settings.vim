@@ -88,6 +88,8 @@ set hlsearch
 nnoremap <leader>8 :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 " clear searches with <leader>=
 nnoremap <leader>= :nohlsearch <bar> :redraw! <CR>
+" don't scroll to the bottom of the screen
+set scrolloff=10
 
 " Tmux style zoom with <leader>z, q/wq to return
 nnoremap <leader>z :tabnew % <CR>
