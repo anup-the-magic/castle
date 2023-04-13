@@ -45,7 +45,7 @@ fi
 
 export LESS='FRX-S --mouse'
 
-(( $+commands[nvim] ))    && {
+(( $+commands[nvim] )) && {
   export EDITOR=nvim
   export GIT_EDITOR=$EDITOR
   alias vim=nvim
