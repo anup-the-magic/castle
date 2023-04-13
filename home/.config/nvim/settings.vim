@@ -144,6 +144,13 @@ augroup filetype_sequence
   au BufWritePre *.sequence,*.seq silent! call SequenceFormatter()
 augroup end
 
+augroup filetype_textproto
+  au!
+  au BufWritePost *.textproto set foldmethod=syntax
+  au FileType textpb setlocal commentstring=#\ %s
+  au FileType textpb setlocal iskeyword-=.
+augroup end
+
 " Save folds automagically
 augroup myFoldGroup
   autocmd!
