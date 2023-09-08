@@ -4,7 +4,6 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | call SourceIfExists('$MYVIMRC')
 endif
 
-call plug#begin()
 call SourceIfExists('~/.config/nvim/plugins/vim-easy-align.vim') " better? tabular
 call SourceIfExists('~/.config/nvim/plugins/coc.nvim.vim')       " language servers!
 call SourceIfExists('~/.config/nvim/plugins/fzf.vim')       " language servers!
@@ -38,25 +37,25 @@ Plug 'kevinoid/vim-jsonc' " add JSON-C
 Plug 'bfrg/vim-jq'        " ultra-useful jq filetype plugin
 
 call SourceIfExists('~/.config/nvim/plugins/elm-vim.vim') " Elm filetype + formatter
-Plug 'itchyny/vim-haskell-indent'                        " Pre-indent code so hindent doesn't struggle so much
-Plug 'pangloss/vim-javascript'                           " adds ES6 highlighting, alongside vim-jsx
-Plug 'leafgarland/typescript-vim'                        " typescript ft
-Plug 'mxw/vim-jsx'                                       " jsx highlighting
-Plug 'derekwyatt/vim-scala'                              " scala syntax
-Plug 'elixir-lang/vim-elixir'                            " elixir syntax
-Plug 'avdgaag/vim-phoenix'                               " Phoenix additions
-Plug 'wavded/vim-stylus'                                 " syntax for Stylus
-Plug 'kchmck/vim-coffee-script'                          " Coffeescript
-Plug 'digitaltoad/vim-pug'                               " Jade/pug format
-Plug 'fatih/vim-go'                                      " Golang support
-Plug 'xavierchow/vim-sequence-diagram'                   " Sequence Diagrams
+Plug 'itchyny/vim-haskell-indent'                         " Pre-indent code so hindent doesn't struggle so much
+Plug 'pangloss/vim-javascript'                            " adds ES6 highlighting, alongside vim-jsx
+Plug 'leafgarland/typescript-vim'                         " typescript ft
+Plug 'mxw/vim-jsx'                                        " jsx highlighting
+Plug 'derekwyatt/vim-scala'                               " scala syntax
+Plug 'elixir-lang/vim-elixir'                             " elixir syntax
+Plug 'avdgaag/vim-phoenix'                                " Phoenix additions
+Plug 'udalov/kotlin-vim'                                  " Kotlin
+Plug 'wavded/vim-stylus'                                  " syntax for Stylus
+Plug 'kchmck/vim-coffee-script'                           " Coffeescript
+Plug 'digitaltoad/vim-pug'                                " Jade/pug format
+Plug 'fatih/vim-go'                                       " Golang support
+Plug 'xavierchow/vim-sequence-diagram'                    " Sequence Diagrams
 " ================ Colors ================
 Plug 'altercation/vim-colors-solarized' " colorscheme -- solarized
 Plug 'aliou/moriarty.vim'               " colorscheme -- moriarty
 Plug 'tomsik68/vim-crystallite'         " colorscheme -- crystallite
 Plug 'dracula/Vim'                      " colorscheme -- dracula
 Plug 'marciomazza/vim-brogrammer-theme' " colorscheme -- brogrammer
-call plug#end()
 
 "" Plug 'tpope/vim-fireplace'          " Clojure repl
 "" Plug 'tpope/vim-classpath'          " Fixes find and gf in Java

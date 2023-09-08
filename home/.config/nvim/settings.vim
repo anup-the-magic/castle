@@ -106,6 +106,7 @@ augroup local
 
   au CursorHold,CursorHoldI * silent! checktime " update files when they're just sitting around
   au BufWritePre * %s/\s\+$//e " Trim trailing spaces
+  au BufWinEnter * silent! :%foldopen!
 augroup END
 
 augroup filetype_json
@@ -146,9 +147,10 @@ augroup end
 
 augroup filetype_textproto
   au!
-  au BufWritePost *.textproto set foldmethod=syntax
+  au BufWritePost *.textproto,*.pbtxt,*.textpb set foldmethod=syntax
+
   au FileType textpb setlocal commentstring=#\ %s
-  au FileType textpb setlocal iskeyword-=.
+  au FileType textpb set iskeyword-=.
 augroup end
 
 " Save folds automagically
