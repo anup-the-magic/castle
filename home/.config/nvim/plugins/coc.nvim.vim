@@ -1,6 +1,11 @@
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
-let g:coc_global_extensions = ['coc-json', 'coc-metals', 'coc-prettier', 'coc-tsserver']
+let g:coc_global_extensions = []
+" let g:coc_global_extensions += ['coc-json']
+" let g:coc_global_extensions += ['coc-metals']
+" let g:coc_global_extensions += ['coc-prettier']
+" let g:coc_global_extensions += ['coc-tsserver']
+" let g:coc_global_extensions += ['coc-pyright']
 
 "" coc.nvim, CoC
 set hidden " Required for TextEdit (rename, effectively)
@@ -14,6 +19,9 @@ set updatetime=300
 set cmdheight=2
 " Really not certain what this is
 set shortmess+=c
+
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Tab completes completions
 " Use tab for trigger completion with characters ahead and navigate
