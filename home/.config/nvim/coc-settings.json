@@ -6,6 +6,7 @@
   "coc.preferences.formatOnType": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "metals.scalafmtConfigPath": "/google/src/files/head/depot/google3/devtools/scala/scalafmt.conf",
+  "suggest.noselect": true,
   "languageserver": {
     // haskell
     "haskell-ide-engine": {
