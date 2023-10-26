@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+usage() {
+  echo "USAGE: rename-window <name>" >&2
+  exit 1
+}
+
+[ "$#" -eq 1 ] || usage
+
+new_name=$1
+# xdotool getactivewindow set_window --name "$new_name"
+i3-msg "title_format $new_name"

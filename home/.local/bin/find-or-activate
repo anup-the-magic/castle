@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+usage() {
+  # assumes PATH
+  script=$(basename "$0")
+  echo "USAGE: $script <program_name>"
+  exit 1
+}
+
+[ -z "$1" ] && usage "$@"
+
+window_id=$(xdotool search --classname "$1" | head -n 1)
+if [ -z "$window_id" ]; then $1 && return; fi
+
+i3-msg '[id="'"$window_id"'"] focus'

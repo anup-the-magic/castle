@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+window_id=$(xdotool search --classname kitty | head -n 1)
+if [ -z "$window_id" ]; then kitty && return; fi
+
+window_info=$(xwininfo -all -id $window_id)
+if echo "$window_info" | grep "Focused"; then
+  xdotool windowminimize $window_id
+elif echo "$window_info" | grep "Hidden"; then
+  xdotool windowactivate $window_id
+else # unfocused, unminimized
+  xdotool windowactivate $window_id
+fi

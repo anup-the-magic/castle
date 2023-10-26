@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+file=/tmp/current-window-stack
+if [[ -s $file ]] ; then
+  window_id=$(cat $file)
+  xdotool windowmap "$window_id"
+  xdotool windowactivate "$window_id"
+  cat /dev/null > $file
+else
+  wid=$(xdotool getactivewindow)
+  xdotool windowunmap "$wid"
+  echo "$wid" > "$file"
+fi

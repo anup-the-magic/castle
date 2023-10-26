@@ -5,7 +5,6 @@
   "diagnostic.maxWindowHeight": 20,
   "coc.preferences.formatOnType": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
-  "metals.scalafmtConfigPath": "/google/src/files/head/depot/google3/devtools/scala/scalafmt.conf",
   "suggest.noselect": true,
   "languageserver": {
     // haskell
@@ -40,20 +39,15 @@
     },
 
     // Work
-    // "intellij-lsp": {
-    //   "host": "localhost",
-    //   "port": "5800",
-    //   "filetypes": ["java", "scala", "sbt"]
-    // },
     "ciderlsp": {
       "command": "/google/bin/releases/cider/ciderlsp/ciderlsp",
       "args": ["--tooltag=coc-nvim", "--noforward_sync_responses"],
-      "filetypes": [ "borg", "c", "cpp", "go", "java", "proto", "python", "textproto" ]
+      "filetypes": [ "borg", "c", "cpp", "java", "proto", "textproto" ]
     },
     "kythelsp": {
       "command": "/google/bin/releases/grok/tools/kythe_languageserver",
       "args": ["--google3"],
-      "filetypes": ["python", "go", "java", "cpp", "proto"]
+      "filetypes": ["java", "cpp", "proto"]
     }
   }
 }
