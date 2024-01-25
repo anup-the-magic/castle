@@ -29,18 +29,18 @@ command! Q q
 set mouse+=a
 " Clipboard goes into paste
 set clipboard^=unnamed,unnamedplus
-" let g:clipboard = {
-"           \   'name': 'WslClipboard',
-"           \   'copy': {
-"           \      '+': 'clip.exe',
-"           \      '*': 'clip.exe',
-"           \    },
-"           \   'paste': {
-"           \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-"           \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-"           \   },
-"           \   'cache_enabled': 0,
-"           \ }
+let g:clipboard = {
+\   'name': 'WslClipboard',
+\   'copy': {
+\      '+': 'clip.exe',
+\      '*': 'clip.exe',
+\    },
+\   'paste': {
+\      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+\      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+\   },
+\   'cache_enabled': 0,
+\ }
 
 
 " Line numbers
@@ -68,11 +68,11 @@ nnoremap <leader>pro :botright vnew ~/.bash_profile<CR>
 
 " Convenience for dealing with similar folders
 " edit file in the current buffer's folder
-nnoremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 " read from current folder
-nnoremap <Leader>r :r <C-R>=expand("%:p:h") . "/" <CR>
+nnoremap <leader>r :r <C-R>=expand("%:p:h") . "/" <CR>
 " copy into current folder
-nnoremap <Leader>w :w <C-R>=expand("%:p:h") . "/" <CR>
+nnoremap <leader>w :w <C-R>=expand("%:p:h") . "/" <CR>
 
 " reindent the entire file
 nnoremap <leader>; mcgg=G`c
