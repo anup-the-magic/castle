@@ -1,4 +1,6 @@
 *.sw[a-p]
 
+.vscode
+
 ._tmp/
 metals.sbt

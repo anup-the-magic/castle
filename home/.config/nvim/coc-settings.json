@@ -48,6 +48,13 @@
       "filetypes": ["elm"],
       "rootPatterns": ["elm.json"],
       "initializationOptions": { "elmAnalyseTrigger": "change" }
+    },
+
+    "godot": {
+      "command": "npx",
+      "args": ["godot-wsl-lsp", "--use-mirrored-networking"],
+      "rootPatterns": ["project.godot", ".git"],
+      "filetypes": ["gdscript"]
     }
   }
 }
