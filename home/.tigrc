@@ -8,9 +8,10 @@ bind main c @sh -c "git branch --points-at=%(commit) | \
 bind status + !git commit --amend --no-edit
 bind status A !git add -N %(file)
 
-set refresh-mode = auto
+set refresh-mode = periodic
+set refresh-interval = 10
 set ignore-case = smart-case
 set main-view-date = relative
-set reference-format = [branch] <tag> {remote} ~replace~ -->_head_<-- <<local-tag>>
+set reference-format = [branch] <tag> {remote} ~replace~ [head]<== <<local-tag>>
 
-color main-head magenta default bold
+color main-head blue default bold

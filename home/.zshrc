@@ -38,7 +38,11 @@ plugins=(
   fzf
   gitfast
   ripgrep
+  ssh-agent
 )
+zstyle :omz:plugins:ssh-agent lazy yes
+# Suppresses the "starting ssh-agent" message
+zstyle :omz:plugins:ssh-agent quiet yes
 
 [ -f "$HOME/.completions.zsh" ] && source "$HOME/.completions.zsh"
 source $ZSH/oh-my-zsh.sh
@@ -46,3 +50,4 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 [[ -f ~/company/shrc.sh ]] && source ~/company/shrc.sh
+
