@@ -38,6 +38,7 @@ Plug 'bfrg/vim-jq'        " ultra-useful jq filetype plugin
 
 call SourceIfExists('~/.config/nvim/plugins/elm-vim.vim') " Elm filetype + formatter
 Plug 'itchyny/vim-haskell-indent'                         " Pre-indent code so hindent doesn't struggle so much
+call SourceIfExists('~/.config/nvim/plugins/haskell-fold.vim') " Better haskell folds
 Plug 'pangloss/vim-javascript'                            " adds ES6 highlighting, alongside vim-jsx
 Plug 'leafgarland/typescript-vim'                         " typescript ft
 Plug 'mxw/vim-jsx'                                        " jsx highlighting

@@ -139,7 +139,6 @@ function! SequenceFormatter()
   execute 'normal `t'
 endfunction
 
-
 augroup filetype_sequence
   au!
   au BufWritePre *.sequence,*.seq silent! call SequenceFormatter()
