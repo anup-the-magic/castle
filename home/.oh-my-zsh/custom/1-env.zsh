@@ -51,6 +51,12 @@ export LESS='FRX-S --mouse'
   export GIT_EDITOR=$EDITOR
   alias vim=nvim
 }
+
+(( $+commands[gem] )) && {
+  export GEM_PATH=$HOME/gems
+  path+=$GEM_PATH/bin
+}
+
 path+=./._tmp
 path+=.
 
