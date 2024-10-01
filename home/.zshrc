@@ -8,6 +8,7 @@ fi
 export ZSH="$HOME/.oh-my-zsh"
 
 bindkey -v
+export KEYTIMEOUT=10
 bindkey -M viins 'jk' vi-cmd-mode
 bindkey -M vicmd 'cc' vi-change-whole-line
 bindkey -M vicmd 'C-r' history-inc-search
