@@ -26,8 +26,8 @@ COMPLETION_WAITING_DOTS="true"
 [ -f "$HOME/.homesick/repos/homeshick/homeshick.sh" ] && source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 
 fpath=(
-  $HOME/.homesick/repos/homeshick/completions
-  $HOME/.asdf/completions
+  "$HOME/.homesick/repos/homeshick/completions"
+  "$HOME/.asdf/completions"
   $fpath
 )
 
@@ -49,6 +49,6 @@ zstyle :omz:plugins:ssh-agent quiet yes
 source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-[[ -f ~/company/shrc.sh ]] && source ~/company/shrc.sh
-[ -f ~/.company/.zshrc ] && source ~/.company/.zshrc
+[[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
+[[ -f "$HOME/company/shrc.sh" ]] && source "$HOME/company/shrc.sh"
+[ -f "$HOME/.company/.zshrc" ] && source "$HOME/.company/.zshrc"
