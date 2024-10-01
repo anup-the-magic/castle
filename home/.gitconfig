@@ -21,10 +21,17 @@
   local-prune = !"git branch --merged | grep -Ev '\\*|main|develop|release*' | xargs -n1 -p git branch -d"
   edit-prune = !"git branch --merged | grep -Ev '\\*|main|develop' >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches"
   freebase = !"git fetch && git rebase"
+  followers = !"git branch --format='%(refname:short)' --contains $1@{1}"
+  follow = !"git followers $1 | xargs -n 1 git rebase --onto $1 $1@{1} && git checkout $1"
+  move = !"git rebase $1 $2 && git follow $2"
   fix-local = !bash -c 'git push origin +${1:-develop}:$(git rev-parse --abbrev-ref HEAD)'
   pushup = push -u origin HEAD
   sync-tags = !"git tag -d $(git tag -l) && git fetch"
   awesome-diff = !bash -c 'tig ${1:-develop} ${2:-HEAD} ^$(git merge-base --all ${1:-develop} ${2:-HEAD})~1'
+  br-info = branch --format '%(refname:short) %(upstream:short)'
+  remote-only = !"git br-info | awk '{if (!!$2) print $1 \" -> \" $2;}'"
+  local-only = !"git br-info | awk '{if (!$2) print $1;}'"
+  ls = !"echo Local:; git local-only; echo \"\\nRemote:\"; git remote-only"
   wip = !"git add -A && git commit -nm 'WIP'"
 
   lg = !"git lg1"
