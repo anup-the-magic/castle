@@ -18,8 +18,8 @@
   fff = !"git fetch && git merge --ff-only"
   nf = merge --no-ff
   noff = merge --no-ff
-  local-prune = !"git branch --merged | grep -Ev '\\*|master|develop|release*' | xargs -n1 -p git branch -d"
-  edit-prune = !"git branch --merged | grep -Ev '\\*|master|develop' >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches"
+  local-prune = !"git branch --merged | grep -Ev '\\*|main|develop|release*' | xargs -n1 -p git branch -d"
+  edit-prune = !"git branch --merged | grep -Ev '\\*|main|develop' >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches"
   freebase = !"git fetch && git rebase"
   fix-local = !bash -c 'git push origin +${1:-develop}:$(git rev-parse --abbrev-ref HEAD)'
   pushup = push -u origin HEAD
