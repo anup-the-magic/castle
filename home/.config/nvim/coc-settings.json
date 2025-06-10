@@ -7,6 +7,8 @@
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "suggest.noselect": true,
 
+  "typescript.referencesCodeLens.enable": false,
+
   "coc.preferences.formatOnTypeFiletypes": [
     "css",
     "markdown",
