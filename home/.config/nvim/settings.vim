@@ -93,6 +93,8 @@ set scrolloff=10
 
 " Tmux style zoom with <leader>z, q/wq to return
 nnoremap <leader>z :tabnew % <CR>
+nnoremap ]t :tabnext<CR>
+nnoremap [t :tabprev<CR>
 
 " autocommands
 augroup local
