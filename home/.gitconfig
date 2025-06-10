@@ -51,3 +51,5 @@
   submodulesummary = 1
 [tag]
   sort = v:refname
+[init]
+	defaultBranch = main
