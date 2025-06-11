@@ -4,10 +4,10 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | call SourceIfExists('$MYVIMRC')
 endif
 
-call SourceIfExists('~/.config/nvim/plugins/vim-easy-align.vim') " better? tabular
-call SourceIfExists('~/.config/nvim/plugins/coc.nvim.vim')       " language servers!
-call SourceIfExists('~/.config/nvim/plugins/fzf.vim')       " language servers!
-call SourceIfExists('~/.config/nvim/plugins/vista.vim')          " language servers, tree view
+call SourceIfExists('~/.config/nvim.old/plugins/vim-easy-align.vim') " better? tabular
+call SourceIfExists('~/.config/nvim.old/plugins/coc.nvim.vim')       " language servers!
+call SourceIfExists('~/.config/nvim.old/plugins/fzf.vim')       " language servers!
+call SourceIfExists('~/.config/nvim.old/plugins/vista.vim')          " language servers, tree view
 
 Plug 'wesQ3/vim-windowswap'           " swap panes w/ \ww
 Plug 'christoomey/vim-tmux-navigator' " C-[hjkl] pane/tmux split navigation
@@ -25,10 +25,10 @@ Plug 'tpope/vim-dispatch'             " Async fire off terminal commands!
 Plug 'airblade/vim-gitgutter' " Provides branch changes in the gutter
 
 Plug 'mileszs/ack.vim'                                         " code search in Vim using ack. Required for Ag
-call SourceIfExists('~/.config/nvim/plugins/vim-livedown.vim') " Markdown live preview
-call SourceIfExists('~/.config/nvim/plugins/ctrlp.vim')        " quick file search in base directory
-call SourceIfExists('~/.config/nvim/plugins/nerdtree.vim')     " Filetree explorer
-call SourceIfExists('~/.config/nvim/plugins/ag.vim')           " Like Ack but faster
+call SourceIfExists('~/.config/nvim.old/plugins/vim-livedown.vim') " Markdown live preview
+call SourceIfExists('~/.config/nvim.old/plugins/ctrlp.vim')        " quick file search in base directory
+call SourceIfExists('~/.config/nvim.old/plugins/nerdtree.vim')     " Filetree explorer
+call SourceIfExists('~/.config/nvim.old/plugins/ag.vim')           " Like Ack but faster
 Plug 'will133/vim-dirdiff'                                    " Allow diffing on directories
 
 " =============== Syntax ===============
@@ -36,9 +36,9 @@ Plug 'elzr/vim-json'      " makes jsons more readable
 Plug 'kevinoid/vim-jsonc' " add JSON-C
 Plug 'bfrg/vim-jq'        " ultra-useful jq filetype plugin
 
-call SourceIfExists('~/.config/nvim/plugins/elm-vim.vim') " Elm filetype + formatter
+call SourceIfExists('~/.config/nvim.old/plugins/elm-vim.vim') " Elm filetype + formatter
 Plug 'itchyny/vim-haskell-indent'                         " Pre-indent code so hindent doesn't struggle so much
-call SourceIfExists('~/.config/nvim/plugins/haskell-fold.vim') " Better haskell folds
+call SourceIfExists('~/.config/nvim.old/plugins/haskell-fold.vim') " Better haskell folds
 Plug 'pangloss/vim-javascript'                            " adds ES6 highlighting, alongside vim-jsx
 Plug 'leafgarland/typescript-vim'                         " typescript ft
 Plug 'mxw/vim-jsx'                                        " jsx highlighting

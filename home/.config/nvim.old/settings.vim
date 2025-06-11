@@ -2,9 +2,9 @@
 set splitright
 set splitbelow
 
-" Fix undofiles
-set undofile
-set undodir=~/.vim/undos
+"M Fix undofiles
+"M set undofile
+"M set undodir=~/.vim/undos
 
 " Tabbing
 " Make tabbing intuitive
@@ -25,26 +25,26 @@ command! Wq wq
 command! Wqa wqa
 command! Q q
 
-" Allow mouse
-set mouse+=a
-" Clipboard goes into paste
-set clipboard^=unnamed,unnamedplus
-let g:clipboard = {
-\   'name': 'WslClipboard',
-\   'copy': {
-\      '+': 'clip.exe',
-\      '*': 'clip.exe',
-\    },
-\   'paste': {
-\      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-\      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-\   },
-\   'cache_enabled': 0,
-\ }
+"M Allow mouse
+"M set mouse+=a
+"M Clipboard goes into paste
+"M set clipboard^=unnamed,unnamedplus
+"M let g:clipboard = {
+"M \   'name': 'WslClipboard',
+"M \   'copy': {
+"M \      '+': 'clip.exe',
+"M \      '*': 'clip.exe',
+"M \    },
+"M \   'paste': {
+"M \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+"M \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+"M \   },
+"M \   'cache_enabled': 0,
+"M \ }
 
 
-" Line numbers
-set number
+"M Line numbers
+"M set number
 set ruler
 
 " Always show command bar
@@ -77,10 +77,11 @@ nnoremap <leader>w :w <C-R>=expand("%:p:h") . "/" <CR>
 " reindent the entire file
 nnoremap <leader>; mcgg=G`c
 
-" Fix searching
-set ignorecase
-set smartcase
-set wildignorecase
+"M Fix searching
+"M set ignorecase
+"M set smartcase
+"M set wildignorecase
+
 " Search as you type
 set incsearch
 " Highlight all matches
@@ -101,7 +102,7 @@ augroup local
   autocmd!
   " source vimrc on changes
   au BufWritePost ~/.vimrc,~/.vim/config/*.vim,~/.company/.vimrc,~/company/vimrc so $MYVIMRC
-  au BufWritePost ~/.config/nvim/*.vim,~/.config/nvim/plugins/*.vim so $MYVIMRC " source vimrc on changes
+  au BufWritePost ~/.config/nvim.old/*.vim,~/.config/nvim.old/plugins/*.vim so $MYVIMRC " source vimrc on changes
 
   " source .tmux.conf on changes
   au BufWritePost ~/.tmux.conf silent! :!tmux source ~/.tmux.conf

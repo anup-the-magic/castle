@@ -6,3 +6,7 @@
 }
 
 (( $+commands[thefuck] )) && eval $(thefuck --alias)
+
+(( $+commands[nvim] )) && {
+  alias nvim.old='NVIM_APPNAME="nvim.old" nvim'
+}
