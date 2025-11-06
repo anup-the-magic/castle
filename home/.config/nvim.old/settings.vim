@@ -1,10 +1,10 @@
-" makes vnew and new behave normally
+"M makes vnew and new behave normally
 set splitright
 set splitbelow
 
 "M Fix undofiles
-"M set undofile
-"M set undodir=~/.vim/undos
+set undofile             "M
+set undodir=~/.vim/undos "X
 
 " Tabbing
 " Make tabbing intuitive
@@ -20,31 +20,33 @@ set backspace=2
 inoremap jk <ESC>
 
 command! W w
-cmap w!! w !sudo tee > /dev/null %
+cnoremap w!! execute 'write !sudo tee > /dev/null %' <bar> edit!
 command! Wq wq
 command! Wqa wqa
 command! Q q
 
 "M Allow mouse
-"M set mouse+=a
+set mouse+=a
+
 "M Clipboard goes into paste
-"M set clipboard^=unnamed,unnamedplus
-"M let g:clipboard = {
-"M \   'name': 'WslClipboard',
-"M \   'copy': {
-"M \      '+': 'clip.exe',
-"M \      '*': 'clip.exe',
-"M \    },
-"M \   'paste': {
-"M \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-"M \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-"M \   },
-"M \   'cache_enabled': 0,
-"M \ }
+set clipboard^=unnamed,unnamedplus
+"M Update clipboard for WSL
+let g:clipboard = {
+\   'name': 'WslClipboard',
+\   'copy': {
+\      '+': 'clip.exe',
+\      '*': 'clip.exe',
+\    },
+\   'paste': {
+\      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+\      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+\   },
+\   'cache_enabled': 0,
+\ }
 
 
 "M Line numbers
-"M set number
+set number
 set ruler
 
 " Always show command bar
@@ -61,10 +63,10 @@ set diffopt=filler,vertical
 
 " convenience files for editing configs
 nnoremap <leader>virc :botright vnew $MYVIMRC<CR>
-nnoremap <leader>mux :botright vnew ~/.tmux.conf<CR>
+nnoremap <leader>mux  :botright vnew ~/.tmux.conf<CR>
 nnoremap <leader>zsh  :botright vnew ~/.oh-my-zsh/custom<CR>
 nnoremap <leader>brc  :botright vnew ~/.bashrc<CR>
-nnoremap <leader>pro :botright vnew ~/.bash_profile<CR>
+nnoremap <leader>pro  :botright vnew ~/.bash_profile<CR>
 
 " Convenience for dealing with similar folders
 " edit file in the current buffer's folder
@@ -78,9 +80,9 @@ nnoremap <leader>w :w <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <leader>; mcgg=G`c
 
 "M Fix searching
-"M set ignorecase
-"M set smartcase
-"M set wildignorecase
+set ignorecase
+set smartcase
+set wildignorecase
 
 " Search as you type
 set incsearch
