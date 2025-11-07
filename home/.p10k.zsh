@@ -32,6 +32,7 @@
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
+    wslmode                 # see prompt_wslmode
     # os_icon               # os identifier
     dir                     # current directory
     vcs                     # git status
@@ -256,7 +257,7 @@
   # This moves the truncation point to the right (positive offset) or to the left (negative offset)
   # relative to the marker. Plain "first" and "last" are equivalent to "first:0" and "last:0"
   # respectively.
-  typeset -g POWERLEVEL9K_DIR_TRUNCATE_BEFORE_MARKER=last
+  typeset -g POWERLEVEL9K_DIR_TRUNCATE_BEFORE_MARKER=first
   # Don't shorten this many last directory segments. They are anchors.
   typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
   # Shorten directory if it's longer than this even if there is space for it. The value can
@@ -1535,6 +1536,54 @@
   typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION=
   # Custom prefix.
   # typeset -g POWERLEVEL9K_TIME_PREFIX='%fat '
+
+
+  ####################################[ wslmode: are we in a WSL folder? ]####################################
+  #
+  # Configuration ->
+  # typeset -g POWERLEVEL9K_WSLMODE_{DIRECT,SYMLINK}_{WIN,WSL}_{CONTENT,VISUAL_IDENTIFIER}_EXPANSION=''
+  #
+
+  typeset -g POWERLEVEL9K_WSLMODE_{DIRECT,SYMLINK}_WSL_{CONTENT,VISUAL_IDENTIFIER}_EXPANSION=
+
+  WSL_SIGNAL=/proc/sys/fs/binfmt_misc/WSLInterop
+  function prompt_wslmode() {
+    dir=$(pwd -P)
+
+    wsl_mode= content=" " symlinked= icon=
+
+    if [ ! -f $WSL_SIGNAL ] ; then return; fi
+
+    # we haven't taken a symlink
+    if [[ ! $(pwd) = $dir ]]; then
+      symlinked=SYMLINK
+      content=">>->>"
+    else
+      symlinked=DIRECT
+      content="|-->"
+    fi
+
+    case $dir in
+      "/mnt/c/"* | "/mnt/d/"*)
+        wsl_mode="WIN"
+        # prepend drive letter with a colon
+        content="${${dir:5:1}:u} $content"
+        icon=$'\ue70f'
+        ;;
+      *)
+        wsl_mode="WSL"
+        icon=$'\uf31b'
+    esac
+
+    state=${symlinked}_${wsl_mode}
+
+    p10k segment -s $state -i $icon -f blue -t $content
+  }
+
+
+  function instant_prompt_wsl_mode() {
+    prompt_wsl_mode
+  }
 
   # Example of a user-defined prompt segment. Function prompt_example will be called on every
   # prompt if `example` prompt segment is added to POWERLEVEL9K_LEFT_PROMPT_ELEMENTS or
