@@ -17,23 +17,27 @@
 [alias]
   ch = checkout
   ff = merge --ff-only
-  fff = !"git fetch && git merge --ff-only"
+  fff = !"git fetch -p && git merge --ff-only"
   nf = merge --no-ff
   noff = merge --no-ff
   local-prune = !"git branch --merged | grep -Ev '\\*|main|develop|release*' | xargs -n1 -p git branch -d"
   edit-prune = !"git branch --merged | grep -Ev '\\*|main|develop' >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches"
   freebase = !"git fetch && git rebase"
-  followers = !"git branch --format='%(refname:short)' --contains $1@{1}"
-  follow = !"git followers $1 | xargs -n 1 git rebase --onto $1 $1@{1} && git checkout $1"
+  followers = !": git checkout ; git branch --format='%(refname:short)' --contains $1@{1}"
+  follow = !": git checkout ; git followers $1 | xargs -n 1 git rebase --onto $1 $1@{1} && git checkout $1"
   move = !"git rebase $1 $2 && git follow $2"
   fix-local = !bash -c 'git push origin +${1:-develop}:$(git rev-parse --abbrev-ref HEAD)'
   pushup = push -u origin HEAD
   sync-tags = !"git tag -d $(git tag -l) && git fetch"
   awesome-diff = !bash -c 'tig ${1:-develop} ${2:-HEAD} ^$(git merge-base --all ${1:-develop} ${2:-HEAD})~1'
+
+  files = ! "git status --short | awk '{ print $2 }'"
+
   br-info = branch --format '%(refname:short) %(upstream:short)'
-  remote-only = !"git br-info | awk '{if (!!$2) print $1 \" -> \" $2;}'"
+  remote-only = !"git br-info | awk '{if (!!$2) print $1 \" -> \" $2;}' | column -t"
   local-only = !"git br-info | awk '{if (!$2) print $1;}'"
-  ls = !"echo Local:; git local-only; echo \"\\nRemote:\"; git remote-only"
+  ls-branches = !"echo Local:; git local-only; echo \"\\nRemote:\"; git remote-only"
+
   wip = !"git add -A && git commit -nm 'WIP'"
 
   lg = !"git lg1"
@@ -44,6 +48,10 @@
   lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
   lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
   lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
+
+  get-remote-dir = !": git fetch && f() { git remote get-url $1 | tr '\\\\' '!' | sed -e 's/^!!wsl\\.localhost!Ubuntu//' | tr '!' '/'; } && f"
+  oldest-ancestor = !: git checkout && bash -c 'diff --old-line-format= --new-line-format= <(git rev-list --first-parent \"${1:-master}\") <(git rev-list --first-parent \"${2:-HEAD}\") | head -1' -
+
 [mergetool "fugitive"]
   cmd = vim -f -c \"Gdiff\" \"$MERGED\"
 [merge]
