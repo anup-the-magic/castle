@@ -11,11 +11,16 @@ fi
 
 export ZSH="$HOME/.oh-my-zsh"
 
+# TODO move this to a file?
+unsetopt BEEP
 bindkey -v
 export KEYTIMEOUT=10
 bindkey -M viins 'jk' vi-cmd-mode
 bindkey -M vicmd 'cc' vi-change-whole-line
 bindkey -M vicmd 'C-r' history-inc-search
+
+# requires vi-mode plugin
+VI_MODE_SET_CURSOR=true
 
 # use manual installation of powerlevel10k
 [[ -f "$HOME/powerlevel10k/powerlevel10k.zsh-theme" ]] && ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -35,6 +40,10 @@ fpath=(
   $fpath
 )
 
+# skip all plugin aliases
+zstyle ':omz:plugins:*' aliases no
+
+ZSH_TMUX_AUTOQUIT=false
 plugins=(
   asdf
   cabal
@@ -42,8 +51,14 @@ plugins=(
   fasd
   fzf
   gitfast
-  ripgrep
   ssh-agent
+
+  tmux
+  node
+  aliases
+  dotnet
+  rust
+  #... check again...
 )
 zstyle :omz:plugins:ssh-agent lazy yes
 # Suppresses the "starting ssh-agent" message
