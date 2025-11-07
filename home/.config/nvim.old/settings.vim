@@ -1,10 +1,10 @@
-" makes vnew and new behave normally
+"M makes vnew and new behave normally
 set splitright
 set splitbelow
 
-" Fix undofiles
-set undofile
-set undodir=~/.vim/undos
+"M Fix undofiles
+set undofile             "M
+set undodir=~/.vim/undos "X
 
 " Tabbing
 " Make tabbing intuitive
@@ -20,15 +20,17 @@ set backspace=2
 inoremap jk <ESC>
 
 command! W w
-cmap w!! w !sudo tee > /dev/null %
+cnoremap w!! execute 'write !sudo tee > /dev/null %' <bar> edit!
 command! Wq wq
 command! Wqa wqa
 command! Q q
 
-" Allow mouse
+"M Allow mouse
 set mouse+=a
-" Clipboard goes into paste
+
+"M Clipboard goes into paste
 set clipboard^=unnamed,unnamedplus
+"M Update clipboard for WSL
 let g:clipboard = {
 \   'name': 'WslClipboard',
 \   'copy': {
@@ -43,7 +45,7 @@ let g:clipboard = {
 \ }
 
 
-" Line numbers
+"M Line numbers
 set number
 set ruler
 
@@ -61,10 +63,10 @@ set diffopt=filler,vertical
 
 " convenience files for editing configs
 nnoremap <leader>virc :botright vnew $MYVIMRC<CR>
-nnoremap <leader>mux :botright vnew ~/.tmux.conf<CR>
+nnoremap <leader>mux  :botright vnew ~/.tmux.conf<CR>
 nnoremap <leader>zsh  :botright vnew ~/.oh-my-zsh/custom<CR>
 nnoremap <leader>brc  :botright vnew ~/.bashrc<CR>
-nnoremap <leader>pro :botright vnew ~/.bash_profile<CR>
+nnoremap <leader>pro  :botright vnew ~/.bash_profile<CR>
 
 " Convenience for dealing with similar folders
 " edit file in the current buffer's folder
@@ -77,10 +79,11 @@ nnoremap <leader>w :w <C-R>=expand("%:p:h") . "/" <CR>
 " reindent the entire file
 nnoremap <leader>; mcgg=G`c
 
-" Fix searching
+"M Fix searching
 set ignorecase
 set smartcase
 set wildignorecase
+
 " Search as you type
 set incsearch
 " Highlight all matches
@@ -101,7 +104,7 @@ augroup local
   autocmd!
   " source vimrc on changes
   au BufWritePost ~/.vimrc,~/.vim/config/*.vim,~/.company/.vimrc,~/company/vimrc so $MYVIMRC
-  au BufWritePost ~/.config/nvim/*.vim,~/.config/nvim/plugins/*.vim so $MYVIMRC " source vimrc on changes
+  au BufWritePost ~/.config/nvim.old/*.vim,~/.config/nvim.old/plugins/*.vim so $MYVIMRC " source vimrc on changes
 
   " source .tmux.conf on changes
   au BufWritePost ~/.tmux.conf silent! :!tmux source ~/.tmux.conf
