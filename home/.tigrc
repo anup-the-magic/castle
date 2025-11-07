@@ -1,19 +1,40 @@
 bind generic g none
+bind generic gg move-first-line
+bind main G none
+bind generic G move-last-line
+bind generic ? view-help
+set line-graphics = utf-8
+
 bind main c @sh -c "git branch --points-at=%(commit) | \
                     sed -n '/^*/ {n;p}' | \
                     (cat -; echo %(commit)) | \
                     head -1 | \
                     xargs git checkout"
 
+bind refs >> !git rebase -i %(branch)
+
 bind status + !git commit --amend --no-edit
 bind status A !git add -N %(file)
+bind status ? >!tig --follow %(file)
+bind diff   ? >!tig --follow %(file)
 
-set refresh-mode = auto
+set refresh-mode = periodic
+# Note, this could probably be faster, but it adds a slight hitch on refresh
+set refresh-interval = 5
 set ignore-case = smart-case
-set main-view-date = relative
+
+# remove by calling "set main-options = "
+bind main a :set main-options =
+bind main A :set main-options = --all
+bind main Z :toggle author-display
 set main-options = --all
+set main-view-date = relative-compact
+set main-view-author = full,maxwidth=10%
+
 # set reference-format = [branch] <tag> hide:remote ~replace~ =>[head] <<local-tag>> {tracked-remote}
-set reference-format = [branch] <tag> remote ~replace~ =>[head] <<local-tag>> {tracked-remote}
+set reference-format = [branch] <tag> remote ~replace~ =>[head] <<local-tag>> >>--tracked-remote--<<
+
+set blame-options = -C -C -C
 
 color main-head blue default bold
-color main-ref green default bold
+color main-ref  red  default bold
