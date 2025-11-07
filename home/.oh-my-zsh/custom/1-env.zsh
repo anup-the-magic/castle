@@ -1,10 +1,14 @@
 typeset -U path
 
 path=(
-  "/usr/local/bin"
+  # local overrides
+  "._tmp/bin"
+  # testing dir
+  "$HOME/scratch/sh"
 
   $path
-
+  "/usr/local/bin"
+  "$HOME/.dotnet/tools"
   "$HOME/bin"
   "/usr/local/sbin"
   "$HOME/.nim/bin"
@@ -43,6 +47,7 @@ unsetopt correct_all
 
 [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && . "$HOME/.nix-profile/etc/profile.d/nix.sh" # added by Nix installer
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
+[ -f "$HOME/.cargo/env" ] &&  source "$HOME/.cargo/env"
 
 export LESS='FRX-S --mouse'
 
