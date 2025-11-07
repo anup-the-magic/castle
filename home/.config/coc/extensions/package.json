@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "coc-prettier": ">=1.1.24",
-    "coc-tsserver": ">=1.8.6"
-  },
-  "disabled": [],
-  "locked": []
-}
