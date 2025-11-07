@@ -19,7 +19,11 @@ path=(
 
 if (( $+commands[brew] )); then
   GNU_SED_PATH=$(brew --prefix)/opt/gnu-sed/libexec/gnubin
-  path = ("$GNU_SED_PATH" $path)
+  path=(
+    "$(brew --prefix)/opt/gnu-sed/libexec/gnubin"
+    $path
+  )
+
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 fi
 
