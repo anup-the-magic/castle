@@ -5,8 +5,9 @@
   email = anup.kishore@gmail.com
 
 [push]
-  default = simple
+  default = current
   followTags = true
+  autoSetupRemote = true
 [core]
   editor = vim
   excludesfile = ~/.gitignore_mac
@@ -53,4 +54,4 @@
 [tag]
   sort = v:refname
 [init]
-	defaultBranch = main
+  defaultBranch = main
