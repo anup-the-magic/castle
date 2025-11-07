@@ -2,6 +2,8 @@
 set completion-ignore-case on
 set visible-stats on
 set editing-mode vi
+set keymap vi
+set show-mode-in-prompt on
 
 # From http://www.ukuug.org/events/linux2003/papers/bash_tips/
 # Incremental searching with Up and Down. Type 'ssh <up>' to get the last 'ssh' command you used
