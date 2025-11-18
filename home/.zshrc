@@ -10,6 +10,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 export ZSH="$HOME/.oh-my-zsh"
+ZSH_CUSTOM="$ZSH/custom"
 
 # TODO move this to a file?
 unsetopt BEEP
@@ -22,13 +23,12 @@ bindkey -M vicmd 'C-r' history-inc-search
 # requires vi-mode plugin
 VI_MODE_SET_CURSOR=true
 
-# use manual installation of powerlevel10k
-[[ -f "$HOME/powerlevel10k/powerlevel10k.zsh-theme" ]] && ZSH_THEME="powerlevel10k/powerlevel10k"
+# use omz installation of powerlevel10k
+[[ -f "$ZSH_CUSTOM/themes/powerlevel10k/powerlevel10k.zsh-theme" ]] && ZSH_THEME="powerlevel10k/powerlevel10k"
 
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
-# ZSH_CUSTOM=/path/to/new-custom-folder
 
 # ASDF requires fpath modifications prior to plugins
 # Homeshick requires fpath modifications prior to plugins, but after sourcing
