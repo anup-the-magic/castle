@@ -5,6 +5,7 @@ fzf   = "latest"
 jq    = "latest"
 gron  = "latest"
 rg    = "latest"
+lua   = "latest"
 node  = "latest"
 
 # Install cargo via rustup:
@@ -13,3 +14,4 @@ node  = "latest"
 "cargo:stylua" = "latest"
 # requires clang install: `sudo apt install clang`
 "cargo:tree-sitter-cli" = { version = "latest", locked = true }
+

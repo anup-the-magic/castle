@@ -38,6 +38,7 @@ zstyle ':omz:plugins:*' aliases no
 # ~/.oh-my-zsh/plugins
 ZSH_TMUX_AUTOQUIT=false
 plugins=(
+  # TODO: Warn on missing mise installation? Autoinstall mise?
   mise
   cabal
   docker
