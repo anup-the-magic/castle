@@ -23,7 +23,7 @@ bindkey -M vicmd 'C-r' history-inc-search
 # requires vi-mode plugin
 VI_MODE_SET_CURSOR=true
 
-# use omz installation of powerlevel10k
+# use manual installation of powerlevel10k
 [[ -f "$ZSH_CUSTOM/themes/powerlevel10k/powerlevel10k.zsh-theme" ]] && ZSH_THEME="powerlevel10k/powerlevel10k"
 
 HYPHEN_INSENSITIVE="true"
@@ -51,7 +51,6 @@ plugins=(
   fasd
   fzf
   gitfast
-  ssh-agent
 
   tmux
   node

@@ -5,6 +5,7 @@ path=(
   "._tmp/bin"
   # testing dir
   "$HOME/scratch/sh"
+  "$HOME/company/bin"
 
   $path
   "/usr/local/bin"
@@ -21,6 +22,7 @@ if (( $+commands[brew] )); then
   GNU_SED_PATH=$(brew --prefix)/opt/gnu-sed/libexec/gnubin
   path=(
     "$(brew --prefix)/opt/gnu-sed/libexec/gnubin"
+    "$(brew --prefix)/bin" # prefer brew-installed objects to not, possibly breaks things
     $path
   )
 
@@ -35,7 +37,6 @@ fi
 
 # ----- Setup autocompletion targets
 [ -x "$(command -v kitty)" ] && source <(kitty + complete setup bash)
-[ -f "$HOME/.company/.zshrc" ] && source "$HOME/.company/.zshrc"
 
 # ----- Prompt
 if [ -f "$HOME/.company/.zsh_prompt" ]; then source "$HOME/.company/.zsh_prompt"
