@@ -49,12 +49,13 @@ bindkey -M viins 'jk' vi-cmd-mode
 
 unsetopt correct_all
 
-
 [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && . "$HOME/.nix-profile/etc/profile.d/nix.sh" # added by Nix installer
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 [ -f "$HOME/.cargo/env" ] &&  source "$HOME/.cargo/env"
+[ -f "/opt/nvim/nvim" ] && { path+=/opt/nvim }
 
-export LESS='FRX-S --mouse'
+# for "Don't clear screen", use "LESS=X$LESS", for "don't chop lines", use LESS="$LESS -+S"
+export LESS='FRS --mouse'
 
 (( $+commands[nvim] )) && {
   export EDITOR=nvim
