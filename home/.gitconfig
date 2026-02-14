@@ -8,6 +8,10 @@
   default = current
   followTags = true
   autoSetupRemote = true
+[rebase]
+  updateRefs = true
+  autoSquash = true
+  rebaseMerges = rebase-cousins
 [core]
   editor = vim
   excludesfile = ~/.gitignore_mac
