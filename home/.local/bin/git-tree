@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    cat <<EOF
+NAME
+    git-tree - display git branches as a tree hierarchy
+
+SYNOPSIS
+    git tree [-a | -r] [-h]
+
+DESCRIPTION
+    Renders local git branches as a nested tree, using '/' separators in
+    branch names (e.g. anup/feature/thing) to define the hierarchy.
+
+    Branches are colored by tracking status:
+        green    up to date with remote
+        yellow   diverged from remote (ahead/behind counts shown)
+        white    local only (no upstream)
+
+OPTIONS
+    -a      Show all branches (local and remote-tracking)
+    -r      Show remote-tracking branches only
+    -h      Show this help message and exit
+
+DEPENDENCIES
+    git, tree
+EOF
+}
+
+# ── Parse arguments ──────────────────────────────────────────────────────────
+
+branch_flag=""
+while getopts ":arh" opt; do
+    case $opt in
+        a) branch_flag="-a" ;;
+        r) branch_flag="-r" ;;
+        h) usage; exit 0 ;;
+        *) echo "Unknown option: -$OPTARG" >&2; usage >&2; exit 1 ;;
+    esac
+done
+
+# ── Preflight checks ────────────────────────────────────────────────────────
+
+for cmd in git tree; do
+    if ! command -v "$cmd" &>/dev/null; then
+        echo "error: '$cmd' is required but not found in PATH." >&2
+        exit 1
+    fi
+done
+
+if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+    echo "error: not inside a git repository." >&2
+    exit 1
+fi
+
+# ── Build temp directory tree ────────────────────────────────────────────────
+
+tmpdir=$(mktemp -d)
+trap 'rm -rf "$tmpdir"' EXIT
+
+has_branches=false
+
+# Local branches: file type encodes tracking status
+#   regular file = local only (white)
+#   executable   = tracking, up to date (green)
+#   fifo         = tracking, diverged (yellow) — filename includes ahead/behind
+if [[ "$branch_flag" != "-r" ]]; then
+    while IFS=$'\t' read -r branch upstream track; do
+        [[ -z "$branch" ]] && continue
+        has_branches=true
+        mkdir -p "$tmpdir/$(dirname "$branch")"
+
+        if [[ -z "$upstream" ]]; then
+            touch "$tmpdir/$branch"
+        elif [[ -z "$track" ]]; then
+            touch "$tmpdir/$branch"
+            chmod +x "$tmpdir/$branch"
+        else
+            label=$(echo "$track" | sed 's/\[//;s/\]//;s/ahead /↑ /;s/, behind / ↓ /;s/behind /↓ /')
+            mkfifo "$tmpdir/$(dirname "$branch")/$(basename "$branch") $label"
+        fi
+    done < <(git for-each-ref --format=$'%(refname:short)\t%(upstream:short)\t%(upstream:track)' refs/heads/)
+fi
+
+# Remote branches: always executable
+if [[ "$branch_flag" == "-a" || "$branch_flag" == "-r" ]]; then
+    while IFS= read -r branch; do
+        [[ -z "$branch" || "$branch" == */HEAD ]] && continue
+        has_branches=true
+        mkdir -p "$tmpdir/$(dirname "$branch")"
+        if [[ ! -e "$tmpdir/$branch" ]]; then
+            touch "$tmpdir/$branch"
+            chmod +x "$tmpdir/$branch"
+        fi
+    done < <(git for-each-ref --format='%(refname:short)' refs/remotes/)
+fi
+
+if [[ "$has_branches" == false ]]; then
+    echo "No branches found." >&2
+    exit 0
+fi
+
+# ── Render ───────────────────────────────────────────────────────────────────
+
+# Override LS_COLORS so tree -C renders our file types with consistent colors:
+#   di=1;34  directories (intermediate path segments) → bold blue
+#   ex=1;32  executables (tracking, up to date)       → bold green
+#   pi=1;33  fifos (tracking, diverged)               → bold yellow
+LS_COLORS="di=1;34:ex=1;32:pi=1;33" tree -C --noreport "$tmpdir" | tail -n +2
