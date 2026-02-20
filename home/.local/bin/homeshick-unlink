@@ -1,0 +1,107 @@
+#!/usr/bin/env zsh
+# Undo a homeshick symlink: replace the symlink at $HOME with the actual file
+# from the castle repo, then remove the file from the repo.
+#
+# Usage: homeshick-unlink <file>...
+#   <file> can be a path relative to $HOME, or an absolute path under $HOME.
+
+set -euo pipefail
+
+CASTLE_HOME="$HOME/.homesick/repos/castle/home"
+DRY_RUN=false
+
+usage() {
+  echo "Usage: homeshick-unlink [-n|--dry-run] <file>..." >&2
+  echo "  Replaces a homeshick symlink with the actual file and removes it from the castle." >&2
+  echo "  -n, --dry-run  Show what would be done without making changes" >&2
+  exit 1
+}
+
+files=()
+for arg in "$@"; do
+  case "$arg" in
+    -n|--dry-run) DRY_RUN=true ;;
+    -h|--help) usage ;;
+    -*) echo "Unknown option: $arg" >&2; usage ;;
+    *) files+=("$arg") ;;
+  esac
+done
+
+[[ ${#files[@]} -eq 0 ]] && usage
+
+for arg in "${files[@]}"; do
+  # Resolve to absolute path
+  target=$(realpath -ms "$arg")
+
+  # Ensure the path is under $HOME
+  if [[ "$target" != "$HOME"/* ]]; then
+    echo "Error: '$arg' is not under \$HOME" >&2
+    exit 1
+  fi
+
+  # The relative path from $HOME (e.g. ".bashrc" or ".config/foo/bar")
+  rel="${target#$HOME/}"
+  castle_file="$CASTLE_HOME/$rel"
+
+  # Validate: the home path must be a symlink
+  if [[ ! -L "$target" ]]; then
+    echo "Error: '$target' is not a symlink" >&2
+    exit 1
+  fi
+
+  # Validate: the symlink must point into the castle (resolve one level only)
+  link_dest=$(cd "$(dirname "$target")" && realpath -ms "$(readlink "$target")")
+  castle_real=$(realpath -ms "$CASTLE_HOME")
+  if [[ "$link_dest" != "$castle_real"/* ]]; then
+    echo "Error: '$target' does not point into the castle repo" >&2
+    exit 1
+  fi
+
+  # Validate: the castle file must exist
+  if [[ ! -e "$castle_file" ]]; then
+    echo "Error: '$castle_file' does not exist in the castle" >&2
+    exit 1
+  fi
+
+  # Check if the castle file is itself a symlink pointing outside the castle
+  if [[ -L "$castle_file" ]]; then
+    castle_link=$(readlink "$castle_file")
+    castle_link_abs=$(realpath "$castle_file")
+    # If we're a symlink outside of the castle
+    if [[ "$castle_link_abs" != "$castle_real"/* ]]; then
+      target_dir=$(dirname "$target")
+      if [[ "$castle_link" == /* ]]; then
+        # Absolute symlink — preserve as absolute
+        new_link="$castle_link"
+      else
+        # Relative symlink — recompute relative to $target's directory
+        new_link=$(realpath --relative-to="$target_dir" "$castle_link_abs")
+      fi
+
+      if $DRY_RUN; then
+        echo "[dry-run] Would symlink '$target' -> '$new_link' and remove from castle"
+        continue
+      fi
+
+      rm "$target"
+      ln -s "$new_link" "$target"
+      rm "$castle_file"
+      echo "Relinked: ~/$rel -> $new_link"
+      continue
+    fi
+  fi
+
+  if $DRY_RUN; then
+    echo "[dry-run] Would copy '$castle_file' -> '$target' and remove from castle"
+    continue
+  fi
+
+  # Replace symlink with the actual file/directory
+  rm "$target"
+  cp -a "$castle_file" "$target"
+
+  # Remove from castle repo
+  rm -rf "$castle_file"
+
+  echo "Unlinked: ~/$rel"
+done
