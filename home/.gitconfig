@@ -37,10 +37,18 @@
 
   files = ! "git status --short | awk '{ print $2 }'"
 
-  br-info = branch --format '%(refname:short) %(upstream:short)'
-  remote-only = !"git br-info | awk '{if (!!$2) print $1 \" -> \" $2;}' | column -t"
-  local-only = !"git br-info | awk '{if (!$2) print $1;}'"
+  lsb         = branch --format '%(refname:short)'
+  lst         = ! "git for-each-ref --format '%(refname:short)' refs/tags | grep -v -F \"$(git ls-remote --tags origin | grep -v \\'\\^{}\\' | cut -f2)\""
+
+  br-info     = branch --format '%(refname:short) %(upstream:short)'
+  lsba        = !"git br-info | tr ' ' '\n' | grep -v '^$'"
+  lsbr        = !"git branch --format '%(upstream:short)' | grep -v '^$'"
+  remote-only = lsbr
+  local-only  = lsb
   ls-branches = !"echo Local:; git local-only; echo \"\\nRemote:\"; git remote-only"
+  merge-root  = !"echo $(git lsba) $(git lst) | xargs git merge-base --octopus HEAD"
+  ls-all      = !"echo $(git lsba) $(git lst) $(git merge-root)~1..."
+  ls-local    = !"echo $(git lsb) $(git merge-base --octopus HEAD $(git lsb) $(git lst))"
 
   wip = !"git add -A && git commit -nm 'WIP'"
 
