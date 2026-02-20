@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+include=()
+exclude=()
+
+while [[ $# -gt 0 ]]; do
+  if [[ $1 == -v ]]; then
+    shift
+    [[ $# -gt 0 ]] && exclude+=(-e "$1")
+  else
+    include+=(-e "$1")
+  fi
+  shift
+done
+
+branches=$(git br-info)
+if [[ ${#include[@]} -gt 0 ]]; then
+  branches=$(echo "$branches" | grep -E "${include[@]}")
+fi
+
+if [[ ${#exclude[@]} -gt 0 ]]; then
+  branches=$(echo "$branches" | grep -vE "${exclude[@]}")
+fi
+
+if [[ -z $branches ]]; then
+  echo "No matching branches found" >&2
+  exit 1
+fi
+
+tig $branches $(echo "$branches" | xargs git merge-base --octopus)~1...
