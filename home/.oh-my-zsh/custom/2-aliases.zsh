@@ -1,13 +1,17 @@
 (( $+commands[tig] ))     && {
   alias tigs="tig status";
-  function tig-grep() {
-    git branch -a | grep $1 | xargs -o tig --all
-  }
 }
 
 (( $+commands[thefuck] )) && eval $(thefuck --alias)
 
-(( $+commands[nvim] )) && {
+(( $+commands[batcat] )) && {
+  alias bat=batcat
+  alias batman='bat -plman'
+  alias bathelp="print -P %F{226}Merge stderr and capture with '2>&1 | bat -plhelp'%f'\n'"
+  alias plhelp='bat -plhelp'
+}
+
+(( $+commands[nvim] )) && [[ -f "~/.config/nvim.old/init.vim" ]] && {
   alias nvim.old='NVIM_APPNAME="nvim.old" nvim'
 }
 
