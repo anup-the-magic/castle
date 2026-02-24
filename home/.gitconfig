@@ -19,6 +19,9 @@
 [fetch]
   prune = true
 [alias]
+  watch-files = !"cd $(git rev-parse --git-common-dir); find refs/heads refs/remotes worktrees/*/HEAD -type f | xargs -L1 realpath"
+  debug  = "!set -x; GIT_TRACE=2 GIT_CURL_VERBOSE=2 GIT_TRACE_PERFORMANCE=2 GIT_TRACE_PACK_ACCESS=2 GIT_TRACE_PACKET=2 GIT_TRACE_PACKFILE=2 GIT_TRACE_SETUP=2 GIT_TRACE_SHALLOW=2 git"
+
   ch = checkout
   ff = merge --ff-only
   fff = !"git fetch -p && git merge --ff-only"
