@@ -29,3 +29,4 @@ fi
 [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh" # added by Nix installer
 
 [ -e "$HOME/.homesick/repos/homeshick/homeshick.sh" ] && source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+[ -e "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"

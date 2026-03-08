@@ -37,6 +37,7 @@ zstyle ':omz:plugins:*' aliases no
 
 # ~/.oh-my-zsh/plugins
 ZSH_TMUX_AUTOQUIT=false
+# ~/.oh-my-zsh/plugins
 plugins=(
   # TODO: Warn on missing mise installation? Autoinstall mise?
   mise

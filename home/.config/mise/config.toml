@@ -1,17 +1,21 @@
 [tools]
 usage = "latest"
-fd    = "latest"
 fzf   = "latest"
 jq    = "latest"
 gron  = "latest"
 rg    = "latest"
-lua   = "latest"
 node  = "latest"
+
+lua = "5.1"
 
 # Install cargo via rustup:
 # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-"cargo:bacon" = { version = "latest", locked = true, features = "clipboard sound" }
+
+"cargo:bat"     = "latest"
+"cargo:fd-find" = "latest"
+
+"cargo:bacon"  = { version = "latest", locked = true, features = "clipboard sound" }
 "cargo:stylua" = "latest"
+
 # requires clang install: `sudo apt install clang`
 "cargo:tree-sitter-cli" = { version = "latest", locked = true }
-
