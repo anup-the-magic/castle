@@ -43,6 +43,7 @@ fpath=(
 # skip all plugin aliases
 zstyle ':omz:plugins:*' aliases no
 
+# ~/.oh-my-zsh/plugins
 ZSH_TMUX_AUTOQUIT=false
 plugins=(
   asdf
