@@ -11,6 +11,7 @@
 [rebase]
   updateRefs = true
   autoSquash = true
+  autoStash = true
   rebaseMerges = rebase-cousins
 [core]
   editor = vim
