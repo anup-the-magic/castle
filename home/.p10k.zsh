@@ -33,6 +33,7 @@
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
     wslmode                 # see prompt_wslmode
+    docker_ctx              # see prompt_docker_ctx
     # os_icon               # os identifier
     dir                     # current directory
     context                 # user@hostname
@@ -1583,6 +1584,24 @@
 
   function instant_prompt_wsl_mode() {
     prompt_wsl_mode
+  }
+
+  ####################################[ docker_ctx: docker container name ]####################################
+
+  function prompt_docker_ctx() {
+    # Only show when inside a Docker container
+    [[ -f /.dockerenv ]] || return
+
+    # Prefer an explicit name passed via env var; fall back to hostname (= short container ID)
+    local name=${DOCKER_CONTAINER_NAME:-$HOSTNAME}
+    [[ -n $name ]] || return
+
+    p10k segment -f 39 -i $'\uf308' -t ${name//\%/%%}
+  }
+
+  function instant_prompt_docker_ctx() {
+    # Container membership never changes mid-session, so instant prompt is safe
+    prompt_docker_ctx
   }
 
   # Example of a user-defined prompt segment. Function prompt_example will be called on every
