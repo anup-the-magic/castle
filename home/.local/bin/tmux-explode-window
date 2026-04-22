@@ -5,10 +5,11 @@ set -euo pipefail
 
 usage() {
     cat >&2 <<'EOF'
-Usage: tmux-explode-window [-s session] [-w window] [-n new-session-name]
+Usage: tmux-explode-window [-s session] [-w window] [-n new-session-name] [-p max-panes]
   -s  source session (default: current session)
   -w  source window index or name (default: current window)
   -n  name for new session (default: source window name)
+  -p  maximum panes per window (default: 1, each pane gets its own window)
 EOF
     exit 1
 }
@@ -16,17 +17,24 @@ EOF
 src_session=""
 src_window=""
 new_session=""
+max_panes=1
 
-while getopts ":s:w:n:h" opt; do
+while getopts ":s:w:n:p:h" opt; do
     case $opt in
         s) src_session="$OPTARG" ;;
         w) src_window="$OPTARG" ;;
         n) new_session="$OPTARG" ;;
+        p) max_panes="$OPTARG" ;;
         h) usage ;;
         :) echo "tmux-explode-window: option -$OPTARG requires an argument" >&2; usage ;;
         *) echo "tmux-explode-window: unknown option -$OPTARG" >&2; usage ;;
     esac
 done
+
+if ! [[ "$max_panes" =~ ^[1-9][0-9]*$ ]]; then
+    echo "tmux-explode-window: -p requires a positive integer" >&2
+    usage
+fi
 
 [[ -z "$src_session" ]] && src_session=$(tmux display-message -p '#{session_name}')
 [[ -z "$src_window" ]] && src_window=$(tmux display-message -p '#{window_index}')
@@ -54,11 +62,24 @@ win_count=$(tmux list-windows -t "$src_session" | wc -l)
 tmux new-session -d -s "$new_session"
 initial_win=$(tmux list-windows -t "$new_session" -F '#{window_id}' | head -1)
 
+current_win=""
+panes_in_win=0
+
 for i in "${!pane_ids[@]}"; do
-    new_win=$(tmux break-pane -d -P -F '#{window_id}' -s "${pane_ids[$i]}" -t "${new_session}:")
-    [[ -n "${pane_titles[$i]}" ]] && tmux rename-window -t "$new_win" "${pane_titles[$i]}"
+    if [[ $panes_in_win -eq 0 ]]; then
+        current_win=$(tmux break-pane -d -P -F '#{window_id}' -s "${pane_ids[$i]}" -t "${new_session}:")
+        [[ -n "${pane_titles[$i]}" ]] && tmux rename-window -t "$current_win" "${pane_titles[$i]}"
+        panes_in_win=1
+    else
+        tmux join-pane -d -s "${pane_ids[$i]}" -t "$current_win"
+    fi
+
+    (( panes_in_win++ ))
+    [[ $panes_in_win -ge $max_panes ]] && panes_in_win=0
 done
 
 tmux kill-window -t "$initial_win"
+# Renumber windows after done
+tmux move-window -r
 
-echo "Created session '$new_session' with ${#pane_ids[@]} windows"
+echo "Created session '$new_session' with ${#pane_ids[@]} panes, max $max_panes per window"
