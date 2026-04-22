@@ -66,19 +66,27 @@ has_branches=false
 #   executable   = tracking, up to date (green)
 #   fifo         = tracking, diverged (yellow) — filename includes ahead/behind
 if [[ "$branch_flag" != "-r" ]]; then
+    current_branch=$(git branch --show-current 2>/dev/null || true)
     while IFS=$'\t' read -r branch upstream track; do
         [[ -z "$branch" ]] && continue
         has_branches=true
-        mkdir -p "$tmpdir/$(dirname "$branch")"
+        dir="$tmpdir/$(dirname "$branch")"
+        leaf=$(basename "$branch")
+        mkdir -p "$dir"
+
+        # Prepend arrow to current branch leaf name
+        if [[ "$branch" == "$current_branch" ]]; then
+            leaf="=>> $leaf"
+        fi
 
         if [[ -z "$upstream" ]]; then
-            touch "$tmpdir/$branch"
+            touch "$dir/$leaf"
         elif [[ -z "$track" ]]; then
-            touch "$tmpdir/$branch"
-            chmod +x "$tmpdir/$branch"
+            touch "$dir/$leaf"
+            chmod +x "$dir/$leaf"
         else
             label=$(echo "$track" | sed 's/\[//;s/\]//;s/ahead /↑ /;s/, behind / ↓ /;s/behind /↓ /')
-            mkfifo "$tmpdir/$(dirname "$branch")/$(basename "$branch") $label"
+            mkfifo "$dir/$leaf $label"
         fi
     done < <(git for-each-ref --format=$'%(refname:short)\t%(upstream:short)\t%(upstream:track)' refs/heads/)
 fi
