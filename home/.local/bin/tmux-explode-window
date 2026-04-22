@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# Explode a tmux window's panes into individual windows in a new session.
+
+set -euo pipefail
+
+usage() {
+    cat >&2 <<'EOF'
+Usage: tmux-explode-window [-s session] [-w window] [-n new-session-name]
+  -s  source session (default: current session)
+  -w  source window index or name (default: current window)
+  -n  name for new session (default: source window name)
+EOF
+    exit 1
+}
+
+src_session=""
+src_window=""
+new_session=""
+
+while getopts ":s:w:n:h" opt; do
+    case $opt in
+        s) src_session="$OPTARG" ;;
+        w) src_window="$OPTARG" ;;
+        n) new_session="$OPTARG" ;;
+        h) usage ;;
+        :) echo "tmux-explode-window: option -$OPTARG requires an argument" >&2; usage ;;
+        *) echo "tmux-explode-window: unknown option -$OPTARG" >&2; usage ;;
+    esac
+done
+
+[[ -z "$src_session" ]] && src_session=$(tmux display-message -p '#{session_name}')
+[[ -z "$src_window" ]] && src_window=$(tmux display-message -p '#{window_index}')
+
+src_target="${src_session}:${src_window}"
+
+mapfile -t pane_ids    < <(tmux list-panes -t "$src_target" -F '#{pane_id}')
+mapfile -t pane_titles < <(tmux list-panes -t "$src_target" -F '#{pane_title}')
+
+[[ ${#pane_ids[@]} -eq 0 ]] && { echo "tmux-explode-window: no panes in $src_target" >&2; exit 1; }
+
+if [[ -z "$new_session" ]]; then
+    win_name=$(tmux display-message -t "$src_target" -p '#{window_name}')
+    new_session="${win_name}!"
+    while tmux has-session -t "$new_session" 2>/dev/null; do
+        new_session="${new_session}!"
+    done
+fi
+
+# If this is the only window in the source session, add a placeholder so the
+# session isn't destroyed as panes are broken out.
+win_count=$(tmux list-windows -t "$src_session" | wc -l)
+[[ $win_count -eq 1 ]] && tmux new-window -d -t "${src_session}:"
+
+tmux new-session -d -s "$new_session"
+initial_win=$(tmux list-windows -t "$new_session" -F '#{window_id}' | head -1)
+
+for i in "${!pane_ids[@]}"; do
+    new_win=$(tmux break-pane -d -P -F '#{window_id}' -s "${pane_ids[$i]}" -t "${new_session}:")
+    [[ -n "${pane_titles[$i]}" ]] && tmux rename-window -t "$new_win" "${pane_titles[$i]}"
+done
+
+tmux kill-window -t "$initial_win"
+
+echo "Created session '$new_session' with ${#pane_ids[@]} windows"

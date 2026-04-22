@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# Collapse a tmux session's windows into a single window with panes.
+
+set -euo pipefail
+
+usage() {
+    cat >&2 <<'EOF'
+Usage: tmux-join-session [-s source-session] [-t target-session] [-n window-name]
+  -s  session to collapse (default: current session)
+  -t  session to receive merged window (default: current session)
+  -n  name for merged window (default: source session name)
+EOF
+    exit 1
+}
+
+src_session=""
+tgt_session=""
+win_name=""
+
+while getopts ":s:t:n:h" opt; do
+    case $opt in
+        s) src_session="$OPTARG" ;;
+        t) tgt_session="$OPTARG" ;;
+        n) win_name="$OPTARG" ;;
+        h) usage ;;
+        :) echo "tmux-join-session: option -$OPTARG requires an argument" >&2; usage ;;
+        *) echo "tmux-join-session: unknown option -$OPTARG" >&2; usage ;;
+    esac
+done
+
+[[ -z "$src_session" ]] && src_session=$(tmux display-message -p '#{session_name}')
+[[ -z "$tgt_session" ]] && tgt_session=$(tmux display-message -p '#{session_name}')
+if [[ -z "$win_name" ]]; then
+    win_name=$(sed 's/!*$//' <<< "$src_session")
+fi
+
+tmux has-session -t "$src_session" 2>/dev/null || { echo "tmux-join-session: session '$src_session' not found" >&2; exit 1; }
+
+mapfile -t win_ids < <(tmux list-windows -t "$src_session" -F '#{window_id}')
+
+[[ ${#win_ids[@]} -eq 0 ]] && { echo "tmux-join-session: no windows in '$src_session'" >&2; exit 1; }
+
+if [[ "$src_session" == "$tgt_session" && ${#win_ids[@]} -eq 1 ]]; then
+    echo "tmux-join-session: only one window, nothing to join"
+    exit 0
+fi
+
+# Capture first window's name and panes before moving it.
+first_win_name=$(tmux display-message -t "${src_session}:${win_ids[0]}" -p '#{window_name}')
+mapfile -t first_pane_ids < <(tmux list-panes -t "${src_session}:${win_ids[0]}" -F '#{pane_id}')
+
+# Establish destination window: move first source window to target session,
+# or (if same session) use it in place.
+if [[ "$src_session" != "$tgt_session" ]]; then
+    tmux move-window -d -s "${src_session}:${win_ids[0]}" -t "${tgt_session}:"
+    dst_win=$(tmux list-windows -t "$tgt_session" -F '#{window_id}' | tail -1)
+    remaining=("${win_ids[@]:1}")
+else
+    dst_win="${win_ids[0]}"
+    remaining=("${win_ids[@]:1}")
+fi
+
+for pane_id in "${first_pane_ids[@]}"; do
+    pane_title=$(tmux display-message -t "$pane_id" -p '#{pane_title}')
+    [[ -z "$pane_title" && -n "$first_win_name" ]] && tmux select-pane -t "$pane_id" -T "$first_win_name"
+done
+
+for win_id in "${remaining[@]}"; do
+    win_title=$(tmux display-message -t "${src_session}:${win_id}" -p '#{window_name}')
+    while IFS= read -r pane_id; do
+        pane_title=$(tmux display-message -t "$pane_id" -p '#{pane_title}')
+        tmux join-pane -d -s "$pane_id" -t "$dst_win"
+        [[ -z "$pane_title" && -n "$win_title" ]] && tmux select-pane -t "$pane_id" -T "$win_title"
+    done < <(tmux list-panes -t "${src_session}:${win_id}" -F '#{pane_id}' 2>/dev/null || true)
+done
+
+tmux rename-window -t "$dst_win" "$win_name"
+
+if [[ "$src_session" != "$tgt_session" ]]; then
+    tmux kill-session -t "$src_session" 2>/dev/null || true
+fi
+
+echo "Merged ${#win_ids[@]} windows into '$win_name' in session '$tgt_session'"
