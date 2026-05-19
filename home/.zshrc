@@ -12,16 +12,8 @@ fi
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$ZSH/custom"
 
-# TODO move this to a file?
-unsetopt BEEP
-bindkey -v
-export KEYTIMEOUT=10
-bindkey -M viins 'jk' vi-cmd-mode
-bindkey -M vicmd 'cc' vi-change-whole-line
-bindkey -M vicmd 'C-r' history-inc-search
-
 # requires vi-mode plugin
-VI_MODE_SET_CURSOR=true
+# VI_MODE_SET_CURSOR=true
 
 # use manual installation of powerlevel10k
 [[ -f "$ZSH_CUSTOM/themes/powerlevel10k/powerlevel10k.zsh-theme" ]] && ZSH_THEME="powerlevel10k/powerlevel10k"

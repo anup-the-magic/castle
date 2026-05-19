@@ -46,8 +46,15 @@ fi
 bindkey -v
 export KEYTIMEOUT=10
 bindkey -M viins 'jk' vi-cmd-mode
+bindkey -M vicmd 'cc' vi-change-whole-line
+bindkey -M vicmd 'C-r' history-inc-search
+
+# I think I just prefer always having block mode...
+_blinking_block() { echo -ne '\e[1 q' }
+precmd_functions+=( _blinking_block   )
 
 unsetopt correct_all
+unsetopt BEEP
 
 [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && . "$HOME/.nix-profile/etc/profile.d/nix.sh" # added by Nix installer
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
