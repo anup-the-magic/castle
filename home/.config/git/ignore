@@ -42,3 +42,8 @@
 
 ## Anup
 ._tmp/
+
+# NOTE: company specific
+squidsteer
+private_ce_only
+datasets.yaml
