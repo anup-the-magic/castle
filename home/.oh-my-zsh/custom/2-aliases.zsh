@@ -62,5 +62,5 @@ alias swap-dirs='cd $(git get-remote-dir $(git remote | grep -v origin))'
 # fix help
 unalias run-help >/dev/null 2>&1
 autoload run-help
-HELPDIR=/usr/share/zsh/"${ZSH_VERSION}"/help
+export HELPDIR=/usr/share/zsh/"${ZSH_VERSION}"/help
 alias help=run-help
