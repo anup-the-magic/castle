@@ -9,4 +9,10 @@ set show-mode-in-prompt on
 # Incremental searching with Up and Down. Type 'ssh <up>' to get the last 'ssh' command you used
 "\e[A": history-search-backward
 "\e[B": history-search-forward
-"jk":"\e"
+"jk": vi-movement-mode
+
+# Add escape to insert mode, and also up/down in insert-mode
+set keymap vi-insert
+"jk": vi-movement-mode
+"\e[A": history-search-backward
+"\e[B": history-search-forward
