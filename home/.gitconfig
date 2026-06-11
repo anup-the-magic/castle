@@ -15,7 +15,6 @@
   rebaseMerges = rebase-cousins
 [core]
   editor = vim
-  excludesfile = ~/.gitignore_mac
   autocrlf = input
 [fetch]
   prune = true
