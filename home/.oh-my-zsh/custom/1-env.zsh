@@ -66,7 +66,11 @@ unsetopt BEEP
 export LESS='FRS --mouse'
 
 
+# we like scratch work, and we like being able to execute the current directory (which can be scary)
 path+=./._tmp
 path+=.
 
 export PATH
+
+# Always cd -P, use -L to override
+setopt CHASE_LINKS
