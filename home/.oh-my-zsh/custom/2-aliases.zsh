@@ -11,8 +11,37 @@
   alias plhelp='bat -plhelp'
 }
 
-(( $+commands[nvim] )) && [[ -f "~/.config/nvim.old/init.vim" ]] && {
-  alias nvim.old='NVIM_APPNAME="nvim.old" nvim'
+(( $+commands[nvim] )) && {
+  export EDITOR=nvim
+  export GIT_EDITOR=$EDITOR
+  alias vim=nvim
+
+  [[ -f "~/.config/nvim.old/init.vim" ]] && {
+    alias nvim.old='NVIM_APPNAME="nvim.old" nvim'
+  }
+}
+
+[ -x "$(command -v kitty)" ] && source <(kitty + complete setup bash)
+
+if (( $+commands[brew] )); then
+  GNU_SED_PATH=$(brew --prefix)/opt/gnu-sed/libexec/gnubin
+  path = ("$GNU_SED_PATH" $path)
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+fi
+
+if (( $+commands[fzf] )); then
+  source <(fzf --zsh)
+  if (( $+commands[fd] )); then
+    export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
+  elif (( $+commands[rg] )); then
+    export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git/*"'
+  fi
+  export FZF_DEFAULT_OPTS='--height=40% --reverse --inline-info'
+fi
+
+(( $+commands[gem] )) && {
+  export GEM_PATH=$HOME/gems
+  path+=$GEM_PATH/bin
 }
 
 tree.dir () {
