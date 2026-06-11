@@ -1,0 +1,24 @@
+[tasks."neovim:init"]
+description = "Clone neovim as expected"
+outputs = ['neovim/.git']
+run = """
+#!/usr/bin/env bash
+git clone git@github.com:neovim/neovim.git
+"""
+
+[tasks.neovim]
+description = "Build neovim from source"
+depends = ['neovim:init']
+run = """
+#!/usr/bin/env bash
+
+set -x
+
+cd neovim/
+git fetch --all --tags --force
+git checkout stable
+[ -e build ] && sudo cmake --build build/ --target uninstall
+rm -rf build/ .deps/
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+sudo make install
+"""
