@@ -38,7 +38,7 @@ zstyle ':omz:plugins:*' aliases no
 # ~/.oh-my-zsh/plugins
 ZSH_TMUX_AUTOQUIT=false
 plugins=(
-  asdf
+  mise
   cabal
   docker
   fasd
@@ -56,10 +56,12 @@ zstyle :omz:plugins:ssh-agent lazy yes
 # Suppresses the "starting ssh-agent" message
 zstyle :omz:plugins:ssh-agent quiet yes
 
-[ -f "$HOME/.completions.zsh" ] && source "$HOME/.completions.zsh"
-source $ZSH/oh-my-zsh.sh
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
+
+# NOTE: we want to disable ssh-agent in this
 [[ -f "$HOME/company/shrc.sh" ]] && source "$HOME/company/shrc.sh"
 [ -f "$HOME/company/zshrc.zsh" ] && source "$HOME/company/zshrc.zsh"
+[ -f "$HOME/.completions.zsh" ] && source "$HOME/.completions.zsh"
+
+source $ZSH/oh-my-zsh.sh
