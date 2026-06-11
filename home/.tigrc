@@ -27,7 +27,6 @@ set ignore-case = smart-case
 bind main a :set main-options =
 bind main A :set main-options = --all
 bind main Z :toggle author-display
-set main-options = --all
 set main-view-date = relative-compact
 set main-view-author = full,maxwidth=10%
 
