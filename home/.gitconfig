@@ -41,6 +41,8 @@
 
   files = ! "git status --short | awk '{ print $2 }'"
 
+  # might be useful longer term?
+  default-branch = !"git symbolic-ref refs/remotes/origin/HEAD | sed 's.^refs/remotes/origin/..'"
   lsb         = branch --format '%(refname:short)'
   lst         = ! "git for-each-ref --format '%(refname:short)' refs/tags | grep -v -F \"$(git ls-remote --tags origin | grep -v \\'\\^{}\\' | cut -f2)\""
 
