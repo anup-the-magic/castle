@@ -53,6 +53,15 @@ precmd_functions+=( _blinking_block   )
 unsetopt correct_all
 unsetopt BEEP
 
+# ----- Reset the tmux X11 display if necessary
+if [ -n "$TMUX" ]; then
+  update_display() {
+    eval "$(tmux show-environment -s DISPLAY 2>/dev/null)"
+  }
+
+  precmd_functions+=(update_display)
+fi
+
 # ----- Command setup
 [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && . "$HOME/.nix-profile/etc/profile.d/nix.sh" # added by Nix installer
 [ -f "$HOME/.ghcup/env"      ] && source "$HOME/.ghcup/env" # ghcup-env
