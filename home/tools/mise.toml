@@ -22,3 +22,45 @@ rm -rf build/ .deps/
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 sudo make install
 """
+
+[tasks."taskwarrior:init"]
+description = "Clone taskwarrior and ensure deps"
+run = """
+#!/usr/bin/env bash
+set -x
+set -eo pipefail
+
+e=0
+[ -d "./taskwarrior" ] || git clone git@github.com:GothenburgBitFactory/taskwarrior.git
+pkg-config --exists uuid || { echo "libuuid is not installed (uuid-dev on debian)"; e=1; }
+
+for cmd in cmake rustc cargo python3; do
+  command -v "$cmd" >/dev/null 2>&1 || { echo "[$cmd] is missing"; e=1; }
+done
+
+exit $e
+"""
+
+[tasks.taskwarrior]
+description = "Build taskwarrior from source"
+depends = ['taskwarrior:init']
+run = """
+#!/usr/bin/env bash
+set -x
+set -eo pipefail
+
+cd taskwarrior
+
+# Cleanup
+[ -e build/install_manifest.txt ] && sudo xargs rm < build/install_manifest.txt
+rm -rf build/
+
+# Update
+git fetch --all --tags --force
+git checkout stable
+
+# Install
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+sudo cmake --install build
+"""
