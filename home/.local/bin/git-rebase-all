@@ -1,0 +1,210 @@
+#!/usr/bin/env bash
+#
+# git-rebase-all — rebase the named branches (default: every branch not yet
+# containing <base>) onto <base>, in a single rebase todo.
+#
+# `git rebase --update-refs` only rewrites refs that lie inside the range being
+# rebased, so it carries a stack but not a fan of independent siblings. This
+# builds a throwaway "carrier" octopus commit whose parents are every stale tip,
+# which puts all of their commits in one range; --rebase-merges then emits one
+# todo with an `update-ref` line per branch. The carrier's own todo line is
+# stripped before the todo runs — see strip_carrier below.
+#
+# Install as `git-rebase-all` on PATH and git exposes it as `git rebase-all`.
+#
+# On a conflict the whole run stops at that commit; `git rebase --continue`
+# carries on through the remaining branches and every ref still updates at the
+# end, but HEAD is left detached, so check out where you were afterwards.
+# `git rebase --abort` rolls back *every* branch, not just the one that failed.
+#
+# Usage: git rebase-all [--onto <base>] [-n|--dry-run] [--] [<branch>...]
+
+set -euo pipefail
+
+# Carrier commit subject. Doubles as the sentinel the todo filter matches on, so
+# keep it in sync with strip_carrier's regex.
+readonly CARRIER_SUBJECT='carrier: git-rebase-all scaffolding'
+
+base=main
+dry_run=false
+tips=()
+
+usage() {
+	cat <<-EOF
+		Usage: git rebase-all [--onto <base>] [-n|--dry-run] [--] [<branch>...]
+
+		  --onto <base>   branch to rebase onto (default: main)
+		  -n, --dry-run   print the branch list and generated todo, change nothing
+		  <branch>...     branches to rebase; default: every branch not
+		                  containing <base>
+	EOF
+}
+
+while [ $# -gt 0 ]; do
+	case $1 in
+	--onto)
+		base=${2:?--onto needs a branch}
+		shift 2
+		;;
+	--onto=*)
+		base=${1#*=}
+		shift
+		;;
+	-n | --dry-run)
+		dry_run=true
+		shift
+		;;
+	-h | --help)
+		usage
+		exit 0
+		;;
+	--)
+		shift
+		tips+=("$@")
+		break
+		;;
+	-*)
+		# Kept distinct from the branch arm so a typo'd flag is an error rather
+		# than a branch name that fails validation with a confusing message.
+		echo "git-rebase-all: unknown option: $1" >&2
+		usage >&2
+		exit 2
+		;;
+	*)
+		tips+=("$1")
+		shift
+		;;
+	esac
+done
+
+git rev-parse --git-dir >/dev/null || exit 1
+
+git rev-parse --verify --quiet "$base^{commit}" >/dev/null ||
+	{ echo "git-rebase-all: no such base: $base" >&2; exit 1; }
+
+# A rebase aborts mid-flight otherwise, and --abort would roll back every branch
+# at once rather than just the one that failed.
+if [ -d "$(git rev-parse --git-path rebase-merge)" ] ||
+	[ -d "$(git rev-parse --git-path rebase-apply)" ]; then
+	echo "git-rebase-all: a rebase is already in progress" >&2
+	exit 1
+fi
+
+if [ ${#tips[@]} -eq 0 ]; then
+	mapfile -t tips < <(git branch --format='%(refname:short)' --no-contains "$base")
+	if [ ${#tips[@]} -eq 0 ]; then
+		echo "git-rebase-all: every branch already contains $base; nothing to do"
+		exit 0
+	fi
+else
+	# Validate what the caller named. The --no-contains sweep could only ever
+	# produce sane local branches; an argv cannot, and every failure mode below
+	# is one that would otherwise surface *after* history had been rewritten.
+	selected=()
+	declare -A seen=()
+	here=$(git rev-parse --show-toplevel)
+
+	for name in "${tips[@]}"; do
+		# --update-refs only emits update-ref lines for refs/heads/*, so a tag,
+		# a remote-tracking ref or a raw sha would be replayed and then silently
+		# dropped.
+		ref=$(git rev-parse --symbolic-full-name --verify --quiet "$name" || true)
+		case $ref in
+		refs/heads/*) ;;
+		'')
+			echo "git-rebase-all: no such branch: $name" >&2
+			exit 1
+			;;
+		*)
+			echo "git-rebase-all: not a local branch: $name ($ref)" >&2
+			exit 1
+			;;
+		esac
+		short=${ref#refs/heads/}
+
+		# A branch named twice would become a duplicate carrier parent.
+		if [ -n "${seen[$short]+x}" ]; then
+			continue
+		fi
+		seen[$short]=1
+
+		# --update-refs skips any branch checked out in a worktree — including a
+		# sibling one, which detaching HEAD here cannot fix. Auto-selection
+		# could absorb that silently; a branch the caller typed cannot.
+		wt=$(git for-each-ref --format='%(worktreepath)' "$ref")
+		if [ -n "$wt" ] && [ "$wt" != "$here" ]; then
+			echo "git-rebase-all: $short is checked out in $wt; it would not be updated" >&2
+			exit 1
+		fi
+
+		# Already on top of $base: cherry-pick resets committer dates, so
+		# replaying would rewrite every commit to no effect.
+		if git merge-base --is-ancestor "$base" "$short"; then
+			echo "git-rebase-all: $short already contains $base; skipping" >&2
+			continue
+		fi
+
+		selected+=("$short")
+	done
+
+	if [ ${#selected[@]} -eq 0 ]; then
+		echo "git-rebase-all: nothing left to rebase onto $base"
+		exit 0
+	fi
+	tips=("${selected[@]}")
+fi
+
+printf 'Rebasing onto %s:\n' "$base"
+printf '  %s\n' "${tips[@]}"
+
+# Restore whatever was checked out; if it is one of the tips it will have been
+# rewritten by then, and checking it out by name picks up the new commit.
+original=$(git symbolic-ref --quiet --short HEAD || git rev-parse HEAD)
+
+# The carrier takes $base's tree, so building it can never conflict — it is
+# scaffolding to define a range, not content.
+parents=()
+for tip in "${tips[@]}"; do
+	parents+=(-p "$tip")
+done
+carrier=$(git commit-tree "${parents[@]}" -m "$CARRIER_SUBJECT" "$base^{commit}^{tree}")
+
+# --rebase-merges would rebuild the carrier as a real octopus merge, which
+# conflicts whenever two branches touch the same file — after every update-ref
+# has already run, stranding you mid-rebase over a commit that gets discarded.
+# Deleting its todo line ends the rebase at the last replayed branch instead.
+# Matching on the subject leaves lines for genuine commits alone.
+#
+# Both spellings must go: with a single tip the carrier has one parent, so it is
+# not a merge at all and --rebase-merges emits it as a plain `pick`.
+strip_carrier="sed -i -E '/^(merge|pick) .*# ${CARRIER_SUBJECT}$/d' \"\$1\""
+
+if $dry_run; then
+	# Detach for the same reason the real run does (see below): git decides the
+	# update-ref set from the worktree state it starts in, so with HEAD still on
+	# one of the tips the preview omits that branch and under-reports the run.
+	# The rebase below checks the carrier out regardless, so this costs nothing.
+	git checkout --quiet --detach "$carrier"
+	# Emptying the todo makes git report "Nothing to do" and exit without
+	# leaving a rebase in progress.
+	GIT_SEQUENCE_EDITOR="$strip_carrier; grep -v '^#' \"\$1\" | grep .; : >\"\$1\"" \
+		git rebase -i --rebase-merges --update-refs "$base" "$carrier" 2>/dev/null || true
+	git checkout --quiet "$original"
+	exit 0
+fi
+
+# Detach before rebasing: --update-refs silently skips any branch that is
+# checked out in a worktree, so leaving HEAD on one of the tips drops it from
+# the update list and leaves it stranded on the old base.
+git checkout --quiet --detach "$carrier"
+
+# -i is what makes git invoke GIT_SEQUENCE_EDITOR at all; --rebase-merges alone
+# builds the todo but executes it without ever opening the hook. Nothing
+# interactive happens — the "editor" is the sed above.
+
+# NOTE: Include the following to have the removal of the merge occur automagically.
+# Ohterwise, you need to manually remove the final line
+# GIT_SEQUENCE_EDITOR="$strip_carrier" \
+git rebase -i --rebase-merges --update-refs "$base"
+
+git checkout --quiet "$original"
