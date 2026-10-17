@@ -1,5 +1,6 @@
 ## Vim
 *.sw[a-p]
+.nvim.lua
 
 ## VSCode
 .vscode/*
