@@ -29,7 +29,6 @@
   nf = merge --no-ff
   noff = merge --no-ff
   local-prune = !"git branch --merged | grep -Ev '\\*|main|develop|release*' | xargs -n1 -p git branch -d"
-  edit-prune = !"git branch --merged | grep -Ev '\\*|main|develop' >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches"
   freebase = !"git fetch && git rebase"
   followers = !": git checkout ; git branch --format='%(refname:short)' --contains $1@{1}"
   follow = !": git checkout ; git followers $1 | xargs -n 1 git rebase --onto $1 $1@{1} && git checkout $1"

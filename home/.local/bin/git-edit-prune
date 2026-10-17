@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+tmp=$(mktemp)
+trap 'rm -f "$tmp"' EXIT
+
+git branch --merged \
+  | grep -Ev '^[*+]|^..(main|master|develop)$' \
+  | cut -c3- >$tmp
+
+${VISUAL:-${EDITOR:-vi}} $tmp
+sed -i '/^[[:space:]]*$/d' "$tmp"
+
+mapfile -t branches < $tmp
+if (( ${#branches[@]} == 0 )); then
+  echo "git-edit-prune: nothing to be done" >&2
+  exit 0
+fi
+
+git branch -d "${branches[@]}"

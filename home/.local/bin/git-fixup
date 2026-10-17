@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+#
+# git-fixup — pick a commit with fzf, then create a `fixup!` commit for it.
+#
+# Also usable as `git fixup` (git finds git-* on PATH).
+#
+# The candidate list is the commits on the current branch since a base ref.
+# The base is resolved, in order of precedence:
+#
+#   1. An explicit ref passed as $1 (branch, tag, or the base of a range).
+#   2. The base of the current PR, via `gh pr view --json baseRefName`.
+#   3. The repository's default branch (origin/HEAD).
+#
+# We write the fixup message in its *subject-text* form —
+#   fixup! <subject of target>
+# rather than passing git a `--fixup=<sha>` reference. Both produce the same
+# committed message, but building it ourselves makes the resilience explicit:
+# autosquash matches fixups to their target by subject line, and subjects
+# survive ordinary rebases (which rewrite SHAs) — so an incremental,
+# non-autosquash rebase that lands between creating this commit and folding it
+# in will not orphan it. A hash reference would.
+#
+# The currently staged changes are committed; with nothing staged git will
+# complain — stage first.
+#
+# Usage:
+#   git fixup                 # base = PR base, else default branch
+#   git fixup main            # base = merge-base with main
+#   git fixup origin/develop  # base = merge-base with that ref
+#
+# Then: git rebase -i --autosquash <base>   (autosquash folds fixups in place)
+
+set -euo pipefail
+
+die() {
+  printf 'git-fixup: %s\n' "$1" >&2
+  exit 1
+}
+
+command -v fzf >/dev/null 2>&1 || die "fzf not found on PATH"
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 ||
+  die "not inside a git work tree"
+
+explicit_base="${1:-}"
+
+# --- resolve the base ref -----------------------------------------------------
+resolve_base() {
+  if [[ -n "$explicit_base" ]]; then
+    git rev-parse --verify --quiet "$explicit_base^{commit}" >/dev/null ||
+      die "not a valid ref: $explicit_base"
+    printf '%s\n' "$explicit_base"
+    return
+  fi
+
+  # Try the PR base, if gh is available and this branch has a PR.
+  if command -v gh >/dev/null 2>&1; then
+    local pr_base
+    if pr_base=$(gh pr view --json baseRefName --jq .baseRefName 2>/dev/null) &&
+      [[ -n "$pr_base" ]]; then
+      # Prefer the remote-tracking form so it resolves without a local branch.
+      if git rev-parse --verify --quiet "origin/$pr_base^{commit}" >/dev/null; then
+        printf 'origin/%s\n' "$pr_base"
+      else
+        printf '%s\n' "$pr_base"
+      fi
+      return
+    fi
+  fi
+
+  # Fall back to the repo's default branch (origin/HEAD -> origin/<default>).
+  local default
+  if default=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null); then
+    printf '%s\n' "$default"
+    return
+  fi
+
+  die "could not resolve a base (pass one explicitly, e.g. \`git fixup main\`)"
+}
+
+base=$(resolve_base)
+
+# Use the merge-base so we only list commits unique to this branch, even if the
+# base ref has advanced since we branched.
+merge_base=$(git merge-base HEAD "$base") ||
+  die "no common ancestor between HEAD and $base"
+
+range="$merge_base..HEAD"
+if [[ -z "$(git rev-list "$range")" ]]; then
+  die "no commits in $base..HEAD to fix up"
+fi
+
+# --- pick a commit with fzf ---------------------------------------------------
+# %H full hash \x1f (unit separator) then a human-readable line for display.
+sha=$(
+  git log --no-merges --format='%H%x1f%C(auto)%h%d %s %C(dim)(%cr, %an)%C(reset)' --color=always "$range" |
+    fzf --ansi \
+      --delimiter=$'\x1f' \
+      --with-nth=2.. \
+      --height=60% \
+      --reverse \
+      --prompt="fixup > " \
+      --header="base: $base  ($(git rev-list --count "$range") commits) — enter to fixup, esc to abort" \
+      --preview="git show --color=always --stat {1}" \
+      --preview-window=down,60%,wrap |
+    cut -d$'\x1f' -f1
+) || true
+
+[[ -n "$sha" ]] || die "aborted (no commit selected)"
+
+# --- commit --------------------------------------------------------------------
+# Subject-text form (see header): resilient to non-autosquash rebases.
+subject=$(git log -1 --format='%s' "$sha")
+git commit -m "fixup! $subject"
+
+short=$(git rev-parse --short "$sha")
+echo
+echo "Created fixup for ${short} (\"${subject}\"). Fold it in with:"
+echo "  git rebase -i --autosquash $base"
