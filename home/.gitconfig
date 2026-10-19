@@ -13,6 +13,8 @@
   autoSquash = true
   autoStash = true
   rebaseMerges = rebase-cousins
+[stash]
+  showIncludeUntracked = true
 [core]
   editor = vim
   autocrlf = input
