@@ -18,6 +18,14 @@ if [[ ${#include[@]} -gt 0 ]]; then
   branches=$(echo "$branches" | grep -E "${include[@]}")
 fi
 
+if [[ -n "$TIGL_DEFAULT_EXCLUDE" ]]; then
+  echo "Using default exclude of [$TIGL_DEFAULT_EXCLUDE]" >&2
+  read -ra defaults <<<"$TIGL_DEFAULT_EXCLUDE"
+  for x in "${defaults[@]}"; do
+    exclude+=(-e "$x")
+  done
+fi
+
 if [[ ${#exclude[@]} -gt 0 ]]; then
   branches=$(echo "$branches" | grep -vE "${exclude[@]}")
 fi
