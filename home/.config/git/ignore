@@ -2,6 +2,13 @@
 *.sw[a-p]
 .nvim.lua
 
+# Claude
+**/.claude/settings.local.json
+
+# Mise
+**/mise.local.toml
+**/hk.local.toml
+
 ## VSCode
 .vscode/*
 !.vscode/settings.json
@@ -32,7 +39,6 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
-
 
 ## Anup
 ._tmp/
