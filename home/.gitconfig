@@ -18,6 +18,10 @@
 [core]
   editor = vim
   autocrlf = input
+[gc]
+  worktreePruneExpire = never
+[maintenance]
+  auto = false
 [fetch]
   prune = true
 [alias]
